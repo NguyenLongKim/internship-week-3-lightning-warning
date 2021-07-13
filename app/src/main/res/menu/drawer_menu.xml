@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboardFragment"
+            android:title="Dashboard"/>
+        <item
+            android:id="@+id/notificationFragment"
+            android:title="Notifications"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profileFragment"
+            android:title="My Profile"/>
+        <item
+            android:id="@+id/settingFragment"
+            android:title="Settings"/>
+    </group>
+</menu>

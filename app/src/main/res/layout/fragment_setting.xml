@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".main.fragments.SettingFragment"
+    tools:ignore="UseSwitchCompatOrMaterialXml">
+
+    <Switch
+        android:id="@+id/sw_disturb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:text="Do not Disturb" />
+
+    <Switch
+        android:id="@+id/sw_alarm_sound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:text="Alarm Sound" />
+
+    <Switch
+        android:id="@+id/sw_alarm_vibration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:text="Alarm Vibration" />
+
+    <TextView
+        android:id="@+id/tv_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:gravity="center_vertical"
+        android:text="Setup Schedule"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_faq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:gravity="center_vertical"
+        android:text="FAQ"
+        android:textColor="@color/black"
+        app:drawableRightCompat="@drawable/ic_arrow_forward" />
+
+    <TextView
+        android:id="@+id/tv_privacy_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:gravity="center_vertical"
+        android:text="Privacy Policy"
+        android:textColor="@color/black"
+        app:drawableRightCompat="@drawable/ic_arrow_forward" />
+
+    <TextView
+        android:id="@+id/tv_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:gravity="center_vertical"
+        android:text="Logout"
+        android:textColor="@color/black" />
+</LinearLayout>
