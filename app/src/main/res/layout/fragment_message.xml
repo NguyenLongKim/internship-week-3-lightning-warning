@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.fragments.StatusFragment">
+    tools:context=".main.fragments.MessageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Status"
+        android:text="Messages"
         android:gravity="center"/>
 
 </FrameLayout>

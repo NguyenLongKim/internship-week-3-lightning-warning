@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.lightningWarning.R
@@ -28,6 +30,9 @@ class DashboardFragment : Fragment() {
             tab.text=position.toString()
             tab.setIcon(R.drawable.ic_notifications)
         }.attach()
+        "Dashboard".also { (activity as AppCompatActivity)
+            .findViewById<TextView>(R.id.toolbar_title)
+            .text = it }
         return view
     }
 

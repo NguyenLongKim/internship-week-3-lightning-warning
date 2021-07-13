@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.lightningWarning.R
 
@@ -21,6 +22,9 @@ class SettingFragment : Fragment() {
             val action = SettingFragmentDirections.actionSettingFragmentToSetupScheduleFragment()
             findNavController().navigate(action)
         }
+        "Settings".also { (activity as AppCompatActivity)
+            .findViewById<TextView>(R.id.toolbar_title)
+            .text = it }
         return view
     }
 }

@@ -27,11 +27,12 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.dashboardFragment),
+            setOf(R.id.dashboardFragment, R.id.profileFragment, R.id.settingFragment),
             binding.drawerLayout
         )
 
         setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
