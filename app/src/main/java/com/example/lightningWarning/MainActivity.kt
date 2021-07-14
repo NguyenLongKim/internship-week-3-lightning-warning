@@ -1,21 +1,26 @@
-package com.example.lightningWarning.main
+package com.example.lightningWarning
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.ActivityMainBinding
+import com.example.lightningWarning.models.UserData
+import com.example.lightningWarning.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +43,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.navDrawer.setupWithNavController(navController)
 
+        val userData = intent.getParcelableExtra<UserData>("userData")
+        if (userData!=null){
+            viewModel.setUserData(userData)
+            viewModel.getSensors()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.lightningWarning.main.fragments.DashboardFragment"
+        android:name="com.example.lightningWarning.fragments.main.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.lightningWarning.main.fragments.NotificationFragment"
+        android:name="com.example.lightningWarning.fragments.main.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.lightningWarning.main.fragments.ProfileFragment"
+        android:name="com.example.lightningWarning.fragments.main.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -26,12 +26,12 @@
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.example.lightningWarning.main.fragments.ChangePasswordFragment"
+        android:name="com.example.lightningWarning.fragments.main.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.lightningWarning.main.fragments.SettingFragment"
+        android:name="com.example.lightningWarning.fragments.main.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupScheduleFragment"
-        android:name="com.example.lightningWarning.main.fragments.SetupScheduleFragment"
+        android:name="com.example.lightningWarning.fragments.main.SetupScheduleFragment"
         android:label="fragment_setup_schedule"
         tools:layout="@layout/fragment_setup_schedule" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.lightningWarning.main.fragments
+package com.example.lightningWarning.fragments.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

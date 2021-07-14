@@ -1,36 +1,43 @@
-package com.example.lightningWarning.startup.fragments
+package com.example.lightningWarning.fragments.startup
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentLoginBinding
+import com.example.lightningWarning.models.UserData
+import com.example.lightningWarning.viewmodels.StartupActivityViewModel
 import java.lang.ClassCastException
+import kotlin.math.sin
 
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
+    private val viewModel by activityViewModels<StartupActivityViewModel>()
+    private lateinit var listener: OnLoginSuccessListener
 
-    private lateinit var onLoginClickListener:OnLoginClickListener
 
-    interface OnLoginClickListener{
-        fun onClick()
+    interface OnLoginSuccessListener{
+        fun onLoginSuccess(userData:UserData)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnLoginClickListener){
-            onLoginClickListener = context
+        if (context is OnLoginSuccessListener){
+            listener = context
         }else{
             throw ClassCastException(context.toString()
-                    + " must implement LoginFragment.onLoginClickListener")
+            +"must implement LoginFragment.OnLoginSuccessListener")
         }
     }
 
@@ -51,9 +58,19 @@ class LoginFragment : Fragment() {
         }
 
         binding.btnLogin.setOnClickListener {
-            onLoginClickListener.onClick()
+            viewModel.signIn(
+                binding.etEmail.text.toString(),
+                binding.etPassword.text.toString()
+            )
         }
 
+        viewModel.getSignInResponseLiveData().observe(viewLifecycleOwner,{signInResponse->
+            if (signInResponse!=null) {
+                listener.onLoginSuccess(signInResponse.data!!)
+            }else{
+                Toast.makeText(context,"Invalid Email or Password!",Toast.LENGTH_LONG).show()
+            }
+        })
 
         return binding.root
     }
@@ -61,6 +78,6 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val toolbar = (activity as AppCompatActivity).supportActionBar
-        toolbar!!.hide()
+        toolbar?.hide()
     }
 }
