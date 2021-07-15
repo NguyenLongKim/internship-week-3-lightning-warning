@@ -69,7 +69,6 @@ class MainActivityViewModel : ViewModel() {
                     override fun onFailure(call: Call<GetSensorDetailResponse>, t: Throwable) {
 
                     }
-
                 }
             )
         }

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         binding.navDrawer.setupWithNavController(navController)
 
         // init user data in view model and load sensors first time
-        // if user data in it is null
+        // if user data in view model is null
         if (viewModel.getUserData() == null) {
             val userData = intent.getParcelableExtra<UserData>("userData")
             if (userData != null) {

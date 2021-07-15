@@ -32,7 +32,7 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_lightning_map, container, false)
@@ -48,7 +48,6 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
             longitude = sensorDetail.longitude
             address = sensorDetail.installation_address
             if (map!=null) {
-                Log.d("CC","moving")
                 map!!.addMarker(MarkerOptions().position(LatLng(latitude,longitude)).title(address))
                 map!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
                 map!!.addCircle(

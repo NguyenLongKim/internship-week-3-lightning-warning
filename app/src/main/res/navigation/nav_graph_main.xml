@@ -9,7 +9,11 @@
         android:id="@+id/dashboardFragment"
         android:name="com.example.lightningWarning.fragments.main.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_searchLocationFragment"
+            app:destination="@id/searchLocationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.lightningWarning.fragments.main.NotificationFragment"
@@ -43,4 +47,8 @@
         android:name="com.example.lightningWarning.fragments.main.SetupScheduleFragment"
         android:label="fragment_setup_schedule"
         tools:layout="@layout/fragment_setup_schedule" />
+    <fragment
+        android:id="@+id/searchLocationFragment"
+        android:name="com.example.lightningWarning.fragments.main.SearchLocationFragment"
+        android:label="SearchLocationFragment" />
 </navigation>

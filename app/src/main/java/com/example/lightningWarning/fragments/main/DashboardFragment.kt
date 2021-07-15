@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.lightningWarning.R
@@ -16,7 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(),StatusFragment.OnSelectedSensorClickListener {
     private lateinit var binding : FragmentDashboardBinding
 
     override fun onCreateView(
@@ -58,5 +59,10 @@ class DashboardFragment : Fragment() {
                 else-> HistoryFragment()
             }
         }
+    }
+
+    override fun onSelectedSensorClick() {
+        val action = DashboardFragmentDirections.actionDashboardFragmentToSearchLocationFragment()
+        findNavController().navigate(action)
     }
 }
