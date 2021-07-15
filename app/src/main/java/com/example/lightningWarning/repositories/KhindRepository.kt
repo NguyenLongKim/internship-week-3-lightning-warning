@@ -1,6 +1,8 @@
 package com.example.lightningWarning.repositories
 
+import android.util.Log
 import com.example.lightningWarning.api.KhindService
+import com.example.lightningWarning.models.GetSensorDetailResponse
 import com.example.lightningWarning.models.GetSensorsResponse
 import com.example.lightningWarning.models.SignInResponse
 import retrofit2.Callback
@@ -22,7 +24,11 @@ class KhindRepository {
         khindService.signIn(email,password).enqueue(callback)
     }
 
-    fun getSensors(token:String, callback:Callback<GetSensorsResponse>){
-        khindService.getSensors(token).enqueue(callback)
+    fun loadSensors(token:String, callback:Callback<GetSensorsResponse>){
+        khindService.loadSensors(token).enqueue(callback)
+    }
+
+    fun loadSensorDetail(token:String,sensorId:String,callback:Callback<GetSensorDetailResponse>){
+        khindService.loadSensorDetail(token,sensorId).enqueue(callback)
     }
 }

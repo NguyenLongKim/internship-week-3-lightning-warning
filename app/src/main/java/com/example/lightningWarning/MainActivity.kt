@@ -2,6 +2,7 @@ package com.example.lightningWarning
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -43,10 +44,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.navDrawer.setupWithNavController(navController)
 
-        val userData = intent.getParcelableExtra<UserData>("userData")
-        if (userData!=null){
-            viewModel.setUserData(userData)
-            viewModel.getSensors()
+        // init user data in view model and load sensors first time
+        // if user data in it is null
+        if (viewModel.getUserData() == null) {
+            val userData = intent.getParcelableExtra<UserData>("userData")
+            if (userData != null) {
+                viewModel.setUserData(userData)
+                viewModel.loadSensors()
+            }
         }
     }
 
