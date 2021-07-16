@@ -8,17 +8,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.lightningWarning.R
+import com.example.lightningWarning.adapters.LocationAdapter
 import com.example.lightningWarning.databinding.FragmentDashboardBinding
+import com.example.lightningWarning.viewmodels.MainActivityViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class DashboardFragment : Fragment(),StatusFragment.OnSelectedSensorClickListener {
+class DashboardFragment : Fragment() {
     private lateinit var binding : FragmentDashboardBinding
+    private val viewModel by activityViewModels<MainActivityViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +34,8 @@ class DashboardFragment : Fragment(),StatusFragment.OnSelectedSensorClickListene
         // init view pager
         val pagerAdapter = MyPagerAdapter(this)
         binding.viewPager.adapter=pagerAdapter
+        binding.viewPager.isUserInputEnabled = false // disable swiping
+
 
         // connect view pager with tab layout
         TabLayoutMediator(binding.tabLayout,binding.viewPager){tab,position->
@@ -41,6 +47,17 @@ class DashboardFragment : Fragment(),StatusFragment.OnSelectedSensorClickListene
         "Dashboard".also { (activity as AppCompatActivity)
             .findViewById<TextView>(R.id.toolbar_title)
             .text = it }
+
+        //observer
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
+            binding.selectedSensor=sensorData
+        })
+
+        // listener
+        binding.tvSelectedSensorDisplayName.setOnClickListener {
+            val action = DashboardFragmentDirections.actionDashboardFragmentToSearchLocationFragment()
+            findNavController().navigate(action)
+        }
 
         return binding.root
     }
@@ -59,10 +76,5 @@ class DashboardFragment : Fragment(),StatusFragment.OnSelectedSensorClickListene
                 else-> HistoryFragment()
             }
         }
-    }
-
-    override fun onSelectedSensorClick() {
-        val action = DashboardFragmentDirections.actionDashboardFragmentToSearchLocationFragment()
-        findNavController().navigate(action)
     }
 }

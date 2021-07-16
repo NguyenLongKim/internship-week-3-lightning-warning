@@ -1,8 +1,6 @@
 package com.example.lightningWarning.api
 
-import com.example.lightningWarning.models.GetSensorDetailResponse
-import com.example.lightningWarning.models.GetSensorsResponse
-import com.example.lightningWarning.models.SignInResponse
+import com.example.lightningWarning.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -20,6 +18,16 @@ interface KhindService {
     @GET("/sensors/{id}")
     fun loadSensorDetail(
         @Header("X-Http-Token") token: String,
-        @Path("id") sensorId:String
+        @Path("id") sensorId: String
     ): Call<GetSensorDetailResponse>
+
+    @DELETE("/auth/sign_out")
+    fun signOut(@Header("X-Http-Token") token: String): Call<SignOutResponse>
+
+    @FormUrlEncoded
+    @POST("/auth/refresh_token")
+    fun refreshToken(
+        @Header("X-Refresh-Token") token: String,
+        @Field("refresh_token") refreshToken: String
+    ): Call<RefreshTokenResponse>
 }

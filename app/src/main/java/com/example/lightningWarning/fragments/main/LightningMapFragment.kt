@@ -29,6 +29,7 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
     private var address: String = ""
     private var map: GoogleMap? = null
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,28 +42,11 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
 
         mapFragment.getMapAsync(this)
 
-        viewModel.loadSensorDetail()
-
         viewModel.getSelectedSensorDetailLiveData().observe(viewLifecycleOwner, { sensorDetail ->
             latitude = sensorDetail.latitude
             longitude = sensorDetail.longitude
             address = sensorDetail.installation_address
-            if (map!=null) {
-                map!!.addMarker(MarkerOptions().position(LatLng(latitude,longitude)).title(address))
-                map!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
-                map!!.addCircle(
-                    CircleOptions()
-                        .center(LatLng(latitude, longitude))
-                        .radius(8000.0)
-                        .strokeColor(Color.YELLOW)
-                )
-                map!!.addCircle(
-                    CircleOptions()
-                        .center(LatLng(latitude, longitude))
-                        .radius(6000.0)
-                        .strokeColor(Color.RED)
-                )
-            }
+            upDateMap()
         })
 
 
@@ -71,5 +55,26 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap) {
         map = p0
+        upDateMap()
+    }
+
+    private fun upDateMap(){
+        if (map!=null) {
+            val newLocation = LatLng(latitude, longitude)
+            map!!.addMarker(MarkerOptions().position(newLocation).title(address))
+            map!!.moveCamera(CameraUpdateFactory.newLatLng(newLocation))
+            map!!.addCircle(
+                CircleOptions()
+                    .center(newLocation)
+                    .radius(8000.0)
+                    .strokeColor(Color.YELLOW)
+            )
+            map!!.addCircle(
+                CircleOptions()
+                    .center(newLocation)
+                    .radius(6000.0)
+                    .strokeColor(Color.RED)
+            )
+        }
     }
 }

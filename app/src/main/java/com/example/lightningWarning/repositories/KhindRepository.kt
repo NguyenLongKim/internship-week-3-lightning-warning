@@ -2,9 +2,7 @@ package com.example.lightningWarning.repositories
 
 import android.util.Log
 import com.example.lightningWarning.api.KhindService
-import com.example.lightningWarning.models.GetSensorDetailResponse
-import com.example.lightningWarning.models.GetSensorsResponse
-import com.example.lightningWarning.models.SignInResponse
+import com.example.lightningWarning.models.*
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,5 +28,13 @@ class KhindRepository {
 
     fun loadSensorDetail(token:String,sensorId:String,callback:Callback<GetSensorDetailResponse>){
         khindService.loadSensorDetail(token,sensorId).enqueue(callback)
+    }
+
+    fun signOut(token:String,callback:Callback<SignOutResponse>){
+        khindService.signOut(token).enqueue(callback)
+    }
+
+    fun refreshToken(token:String,refresh_token:String,callback:Callback<RefreshTokenResponse>){
+        khindService.refreshToken(token,refresh_token).enqueue(callback)
     }
 }

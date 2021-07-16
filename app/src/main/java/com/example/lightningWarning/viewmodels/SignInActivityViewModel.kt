@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StartupActivityViewModel : ViewModel(){
+class SignInActivityViewModel : ViewModel(){
     private val khindRepo = KhindRepository.instance
     private val signInResponseLiveData = MutableLiveData<SignInResponse>()
 

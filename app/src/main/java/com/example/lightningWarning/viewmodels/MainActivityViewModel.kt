@@ -8,13 +8,17 @@ import com.example.lightningWarning.repositories.KhindRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.jvm.internal.FunctionReference
 
 class MainActivityViewModel : ViewModel() {
     private val khindRepo = KhindRepository.instance
     private var userData: UserData? = null
-    private val getSensorsResponseLiveData = MutableLiveData<GetSensorsResponse>()
+    private val sensorsLiveData = MutableLiveData<List<SensorData>>()
     private var selectedSensorLiveData = MutableLiveData<SensorData>()
     private var selectedSensorDetailLiveData = MutableLiveData<SensorDetailData>()
+    private var signOutResponseLiveData = MutableLiveData<SignOutResponse>()
+    private var functionsWaitingForNewToken = mutableListOf<()->Unit>()
+
 
     fun getUserData() = userData
 
@@ -22,12 +26,26 @@ class MainActivityViewModel : ViewModel() {
         this.userData = userData
     }
 
+    fun getSensorsLiveData() = sensorsLiveData
+
     fun getSelectedSensorLiveData() = selectedSensorLiveData
 
     fun getSelectedSensorDetailLiveData() = selectedSensorDetailLiveData
 
+    fun getSignOutResponseLiveData() = signOutResponseLiveData
+
+    fun setSelectedSensor(sensor:SensorData){
+        this.selectedSensorLiveData.value = sensor
+        loadSelectedSensorDetail()
+    }
+
     fun loadSensors() {
         if (userData != null) {
+            if (isTokenExpired()){
+                functionsWaitingForNewToken.add(this::loadSensors)
+                refreshToken()
+                return
+            }
             khindRepo.loadSensors(
                 userData!!.token.token,
                 object : Callback<GetSensorsResponse> {
@@ -35,10 +53,11 @@ class MainActivityViewModel : ViewModel() {
                         call: Call<GetSensorsResponse>,
                         response: Response<GetSensorsResponse>
                     ) {
-                        val body = response.body()
-                        if (body != null) {
-                            getSensorsResponseLiveData.value = body
-                            selectedSensorLiveData.value = body.data[0]
+                        val data = response.body()?.data
+                        if (data != null && data.isNotEmpty()) {
+                            sensorsLiveData.value= data
+                            selectedSensorLiveData.value = data[0]
+                            loadSelectedSensorDetail()
                         }
                     }
 
@@ -49,9 +68,14 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-    fun loadSensorDetail() {
+    private fun loadSelectedSensorDetail() {
         val sensorId = selectedSensorLiveData.value?.id
         if (userData != null && sensorId != null) {
+            if (isTokenExpired()){
+                functionsWaitingForNewToken.add(this::loadSelectedSensorDetail)
+                refreshToken()
+                return
+            }
             khindRepo.loadSensorDetail(
                 userData!!.token.token,
                 sensorId,
@@ -69,8 +93,61 @@ class MainActivityViewModel : ViewModel() {
                     override fun onFailure(call: Call<GetSensorDetailResponse>, t: Throwable) {
 
                     }
-                }
-            )
+                })
+        }
+    }
+
+    fun signOut(){
+        if (userData!=null) {
+            if (isTokenExpired()){
+                functionsWaitingForNewToken.add(this::signOut)
+                refreshToken()
+                return
+            }
+            khindRepo.signOut(
+                userData!!.token.token,
+                object : Callback<SignOutResponse>{
+                    override fun onResponse(
+                        call: Call<SignOutResponse>,
+                        response: Response<SignOutResponse>
+                    ) {
+                        signOutResponseLiveData.value = response.body()
+                    }
+
+                    override fun onFailure(call: Call<SignOutResponse>, t: Throwable) {
+
+                    }
+
+                })
+        }
+    }
+
+    private fun isTokenExpired():Boolean = userData!!.token.expired_at*1000 < System.currentTimeMillis()
+
+    private fun refreshToken(){
+        if (userData!=null){
+            khindRepo.refreshToken(
+                userData!!.token.token,
+                userData!!.token.refresh_token,
+                object:Callback<RefreshTokenResponse>{
+                    override fun onResponse(
+                        call: Call<RefreshTokenResponse>,
+                        response: Response<RefreshTokenResponse>
+                    ) {
+                        val body = response.body()
+                        if (body?.data != null){
+                            userData!!.token=body.data.token
+                        }
+                        for (func in functionsWaitingForNewToken){
+                            func()
+                        }
+                        functionsWaitingForNewToken.clear()
+                    }
+
+                    override fun onFailure(call: Call<RefreshTokenResponse>, t: Throwable) {
+
+                    }
+                })
         }
     }
 }

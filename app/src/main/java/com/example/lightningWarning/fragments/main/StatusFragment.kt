@@ -17,21 +17,7 @@ import com.example.lightningWarning.viewmodels.MainActivityViewModel
 class StatusFragment : Fragment() {
     private val viewModel by activityViewModels<MainActivityViewModel>()
     private lateinit var binding : FragmentStatusBinding
-    private lateinit var onSelectedSensorClickListener: OnSelectedSensorClickListener
 
-    interface OnSelectedSensorClickListener{
-        fun onSelectedSensorClick()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (parentFragment is OnSelectedSensorClickListener){
-            onSelectedSensorClickListener = parentFragment as OnSelectedSensorClickListener
-        }else{
-            throw ClassCastException(parentFragment.toString()+
-            "must implement interface StatusFragment.OnSelectedSensorClickListener")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +30,6 @@ class StatusFragment : Fragment() {
         viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
             binding.selectedSensor = sensorData
         })
-
-        binding.tvSelectedSensorDisplayName.setOnClickListener {
-            onSelectedSensorClickListener.onSelectedSensorClick()
-        }
 
         return binding.root
     }

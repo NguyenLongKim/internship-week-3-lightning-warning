@@ -18,7 +18,7 @@ data class UserData(
     val id: String,
     val position: String,
     val role: String,
-    val token: Token
+    var token: Token
 ):Parcelable
 
 @Parcelize
