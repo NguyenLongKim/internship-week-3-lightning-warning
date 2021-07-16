@@ -4,8 +4,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.lightningWarning.models.GetSensorsResponse
 import com.example.lightningWarning.models.UserData
+import com.example.lightningWarning.repositories.KhindRepository
 import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class StartupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +24,28 @@ class StartupActivity : AppCompatActivity() {
                 jsonStringOfUserData,
                 UserData::class.java
             )
-            intentToMainActivity(userData)
+            KhindRepository.instance.loadSensors(
+                userData.token.token,
+                object: Callback<GetSensorsResponse> {
+                    override fun onResponse(
+                        call: Call<GetSensorsResponse>,
+                        response: Response<GetSensorsResponse>
+                    ) {
+                        val body = response.body()
+                        if (body?.status==true){
+                            intentToMainActivity(userData)
+                        }
+                        else{
+                            intentToSignActivity()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetSensorsResponse>, t: Throwable) {
+                        intentToSignActivity()
+                    }
+
+                }
+            )
         }else{
             intentToSignActivity()
         }

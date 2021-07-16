@@ -29,7 +29,7 @@ data class Company(
 
 @Parcelize
 data class Token(
-    val expired_at: Int,
+    val expired_at: Long,
     val refresh_token: String,
     val token: String
 ):Parcelable
