@@ -15,6 +15,7 @@ data class UserData(
     val company: Company,
     val email: String,
     val full_name: String,
+    var avatar:String?,
     val id: String,
     val position: String,
     val role: String,

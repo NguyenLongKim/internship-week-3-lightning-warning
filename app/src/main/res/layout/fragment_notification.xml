@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.main.NotificationFragment"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        app:tabMode="fixed"
-        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragments.main.NotificationFragment">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.9"
-        android:layout_below="@+id/tab_layout" />
-</LinearLayout>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9" />
+    </LinearLayout>
+</layout>

@@ -16,10 +16,10 @@ import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.viewmodels.SignInActivityViewModel
 import com.google.gson.Gson
 
-class SignInActivity : AppCompatActivity(),LoginFragment.OnLoginSuccessListener {
+class SignInActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var navController: NavController
-    private lateinit var viewModel:SignInActivityViewModel
+    private lateinit var viewModel: SignInActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,22 +46,12 @@ class SignInActivity : AppCompatActivity(),LoginFragment.OnLoginSuccessListener 
     }
 
     override fun onLoginSuccess(userData: UserData) {
-        saveUserData(userData)
         intentToMainActivity(userData)
     }
 
-    private fun saveUserData(userData: UserData){
-        val gson = Gson()
-        val jsonStringOfUserData = gson.toJson(userData)
-        val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
-        val editor = shared.edit()
-        editor.putString("jsonStringOfUserData",jsonStringOfUserData)
-        editor.apply()
-    }
-
-    private fun intentToMainActivity(userData: UserData){
-        val intent = Intent(this,MainActivity::class.java)
-        intent.putExtra("userData",userData)
+    private fun intentToMainActivity(userData: UserData) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userData", userData)
         startActivity(intent)
         finish()
     }

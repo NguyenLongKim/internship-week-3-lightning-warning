@@ -38,6 +38,5 @@
             android:layout_weight="0.2"
             app:tabMode="fixed"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
-
     </LinearLayout>
 </layout>

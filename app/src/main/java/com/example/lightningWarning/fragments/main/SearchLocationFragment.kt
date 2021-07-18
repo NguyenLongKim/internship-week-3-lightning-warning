@@ -1,24 +1,28 @@
 package com.example.lightningWarning.fragments.main
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.LocationAdapter
 import com.example.lightningWarning.databinding.FragmentSearchLocationBinding
 import com.example.lightningWarning.models.SensorData
-import com.example.lightningWarning.viewmodels.MainActivityViewModel
+import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 
 class SearchLocationFragment : Fragment() {
     private lateinit var binding:FragmentSearchLocationBinding
-    private val viewModel by activityViewModels<MainActivityViewModel>()
+    private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,15 +31,17 @@ class SearchLocationFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_location,container,false)
 
+        (activity as AppCompatActivity).supportActionBar?.hide()
+
+        // observer for selected sensor view
         viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
             binding.selectedSensor = sensorData
         })
 
+        // observer for sensors/locations view
         viewModel.getSensorsLiveData().observe(viewLifecycleOwner,{
             binding.rvLocations.adapter?.notifyDataSetChanged()
         })
-
-        (activity as AppCompatActivity).supportActionBar?.hide()
 
         initLocationsRecyclerView()
 
@@ -48,8 +54,9 @@ class SearchLocationFragment : Fragment() {
         binding.rvLocations.layoutManager=LinearLayoutManager(context)
         adapter.setOnLocationClickListener(object : LocationAdapter.OnLocationClickListener{
             override fun onLocationClick(location: SensorData) {
-                viewModel.setSelectedSensor(location)
-                (activity as AppCompatActivity).onBackPressed()
+                val mainActivity = (activity as MainActivity)
+                viewModel.setSelectedSensor(mainActivity.getToken(),location)
+                mainActivity.onBackPressed()
             }
         })
     }

@@ -7,15 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.HistoryAdapter
 import com.example.lightningWarning.databinding.FragmentHistoryBinding
+import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.example.lightningWarning.viewmodels.MainActivityViewModel
 
 class HistoryFragment : Fragment() {
     private lateinit var binding:FragmentHistoryBinding
-    private val viewModel by activityViewModels<MainActivityViewModel>()
+    private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +27,7 @@ class HistoryFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_history,container,false)
 
+        // observer for selected sensor histories view
         viewModel.getSelectedSensorHistoriesLiveData().observe(viewLifecycleOwner,{
             binding.rvHistory.adapter?.notifyDataSetChanged()
         })
@@ -35,12 +39,10 @@ class HistoryFragment : Fragment() {
 
     private fun initRecyclerView(){
         val histories = viewModel.getSelectedSensorHistoriesLiveData().value
-        if (histories!=null) {
-            val adapter = HistoryAdapter(histories)
-            binding.rvHistory.apply {
-                this.adapter = adapter
-                this.layoutManager = LinearLayoutManager(context)
-            }
+        val adapter = HistoryAdapter(histories!!)
+        binding.rvHistory.apply {
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(context)
         }
     }
 }

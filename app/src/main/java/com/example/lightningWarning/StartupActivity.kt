@@ -16,50 +16,59 @@ class StartupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
-        val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
-        val jsonStringOfUserData = shared.getString("jsonStringOfUserData",null)
-        if (jsonStringOfUserData!=null) {
+
+        // retrieve shared preference
+        val sharedPreference = getSharedPreferences("Khind", Context.MODE_PRIVATE)
+
+        // get JSON string of UserData
+        val jsonStringOfUserData = sharedPreference.getString(
+            "jsonStringOfUserData",
+            null
+        )
+
+        if (jsonStringOfUserData != null) { // user is signed in
             val gson = Gson()
+            // convert JSON string to a UserData object
             val userData = gson.fromJson(
                 jsonStringOfUserData,
                 UserData::class.java
             )
+
+            // check if userData is still valid
             KhindRepository.instance.loadSensors(
                 userData.token.token,
-                object: Callback<GetSensorsResponse> {
+                object : Callback<GetSensorsResponse> {
                     override fun onResponse(
                         call: Call<GetSensorsResponse>,
                         response: Response<GetSensorsResponse>
                     ) {
                         val body = response.body()
-                        if (body?.status==true){
+                        if (body?.status == true) { // token isn't expired
                             intentToMainActivity(userData)
-                        }
-                        else{
-                            intentToSignActivity()
+                        } else { // token is expired
+                            intentToSignInActivity()
                         }
                     }
 
                     override fun onFailure(call: Call<GetSensorsResponse>, t: Throwable) {
-                        intentToSignActivity()
                     }
 
                 }
             )
-        }else{
-            intentToSignActivity()
+        } else { // user hasn't signed in
+            intentToSignInActivity()
         }
     }
 
-    private fun intentToMainActivity(userData: UserData){
-        val intent = Intent(this,MainActivity::class.java)
-        intent.putExtra("userData",userData)
+    private fun intentToMainActivity(userData: UserData) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userData", userData)
         startActivity(intent)
         finish()
     }
 
-    private fun intentToSignActivity(){
-        val intent = Intent(this,SignInActivity::class.java)
+    private fun intentToSignInActivity() {
+        val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)
         finish()
     }

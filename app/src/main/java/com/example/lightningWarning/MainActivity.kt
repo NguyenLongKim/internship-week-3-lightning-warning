@@ -1,5 +1,7 @@
 package com.example.lightningWarning
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,15 +18,22 @@ import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.ActivityMainBinding
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.viewmodels.MainActivityViewModel
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val viewModel by viewModels<MainActivityViewModel>()
+    private lateinit var userData: UserData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // retrieve user data from login activity
+        val userData = intent.getParcelableExtra<UserData>("userData")
+        if (userData != null) {
+            this.userData = userData
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navHostFragment =
@@ -33,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.dashboardFragment, R.id.profileFragment, R.id.settingFragment),
+            setOf(
+                R.id.dashboardFragment,
+                R.id.profileFragment,
+                R.id.settingFragment,
+            ),
             binding.drawerLayout
         )
 
@@ -43,16 +56,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.navDrawer.setupWithNavController(navController)
-
-        // init user data in view model and load sensors first time
-        // if user data in view model is null
-        if (viewModel.getUserData() == null) {
-            val userData = intent.getParcelableExtra<UserData>("userData")
-            if (userData != null) {
-                viewModel.setUserData(userData)
-                viewModel.loadSensors()
-            }
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -66,5 +69,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+    fun getToken(): String = this.userData.token.token
+
+    fun getRefreshToken(): String = this.userData.token.refresh_token
+
+    fun getUserData(): UserData = this.userData
+
+    fun setUserData(userData:UserData){
+        this.userData = userData
+    }
+
+    private fun saveUserData(userData: UserData){
+        val gson = Gson()
+        val jsonStringOfUserData = gson.toJson(userData)//convert userData to JSON string
+        val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
+        val editor = shared.edit()
+        editor.putString("jsonStringOfUserData",jsonStringOfUserData)
+        editor.apply()
+    }
+
+    override fun onDestroy() {
+        saveUserData(userData)
+        super.onDestroy()
     }
 }

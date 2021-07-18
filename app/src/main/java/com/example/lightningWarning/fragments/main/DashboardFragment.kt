@@ -8,52 +8,66 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.LocationAdapter
 import com.example.lightningWarning.databinding.FragmentDashboardBinding
+import com.example.lightningWarning.models.SensorData
+import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.example.lightningWarning.viewmodels.MainActivityViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class DashboardFragment : Fragment() {
-    private lateinit var binding : FragmentDashboardBinding
-    private val viewModel by activityViewModels<MainActivityViewModel>()
+class DashboardFragment : Fragment(){
+    private lateinit var binding: FragmentDashboardBinding
+    private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
+    private lateinit var token: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        token = (activity as MainActivity).getToken()
+        viewModel.loadSensors(token)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_dashboard,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
 
         // init view pager
         val pagerAdapter = MyPagerAdapter(this)
-        binding.viewPager.adapter=pagerAdapter
+        binding.viewPager.adapter = pagerAdapter
         binding.viewPager.isUserInputEnabled = false // disable swiping
 
-
         // connect view pager with tab layout
-        TabLayoutMediator(binding.tabLayout,binding.viewPager){tab,position->
-            tab.text=position.toString()
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = position.toString()
             tab.setIcon(R.drawable.ic_notifications)
         }.attach()
 
         // set tittle for action bar
-        "Dashboard".also { (activity as AppCompatActivity)
-            .findViewById<TextView>(R.id.toolbar_title)
-            .text = it }
+        "Dashboard".also {
+            (activity as AppCompatActivity)
+                .findViewById<TextView>(R.id.toolbar_title)
+                .text = it
+        }
 
-        //observer
-        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
-            binding.selectedSensor=sensorData
+        //observer for selected sensor view
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner, { sensorData ->
+            binding.selectedSensor = sensorData
         })
 
-        // listener
+        // listen to navigate to Search location fragment
         binding.tvSelectedSensorDisplayName.setOnClickListener {
             val action = DashboardFragmentDirections.actionDashboardFragmentToSearchLocationFragment()
             findNavController().navigate(action)
@@ -64,16 +78,16 @@ class DashboardFragment : Fragment() {
 
 
     // PagerAdapter inner class
-    private class MyPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment){
+    private class MyPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int {
             return 3
         }
 
         override fun createFragment(position: Int): Fragment {
-            return when(position){
-                0-> StatusFragment()
-                1-> LightningMapFragment()
-                else-> HistoryFragment()
+            return when (position) {
+                0 -> StatusFragment()
+                1 -> LightningMapFragment()
+                else -> HistoryFragment()
             }
         }
     }
