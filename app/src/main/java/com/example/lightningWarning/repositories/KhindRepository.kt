@@ -3,17 +3,24 @@ package com.example.lightningWarning.repositories
 import android.util.Log
 import com.example.lightningWarning.api.KhindService
 import com.example.lightningWarning.models.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Callback
 import retrofit2.Retrofit
+import retrofit2.await
+import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
 class KhindRepository {
     companion object {
         val instance = KhindRepository()
         private const val BASE_URL = "https://khind.vinova.sg"
-        private var okHttpClient = OkHttpClient.Builder().build()
+        private var loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        private var okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

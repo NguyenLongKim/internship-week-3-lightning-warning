@@ -52,6 +52,7 @@ class SettingFragment : Fragment() {
         // observer for sign out response
         viewModel.getSignOutResponseLiveData().observe(viewLifecycleOwner,{response->
             if (response?.status == true) {
+                (activity as MainActivity).setIsSignOut(true)
                 removeUserData()
                 returnToSignInActivity()
             }

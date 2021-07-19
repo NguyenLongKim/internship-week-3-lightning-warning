@@ -4,6 +4,7 @@ import com.example.lightningWarning.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface KhindService {
@@ -22,6 +23,7 @@ interface KhindService {
         @Header("X-Refresh-Token") token: String,
         @Field("refresh_token") refreshToken: String
     ): Call<RefreshTokenResponse>
+
 
     // sign out
     @DELETE("/auth/sign_out")

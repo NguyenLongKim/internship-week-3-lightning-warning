@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.lightningWarning.models.GetSensorsResponse
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.repositories.KhindRepository

@@ -30,8 +30,10 @@ import com.example.lightningWarning.databinding.FragmentProfileBinding
 import com.example.lightningWarning.utils.RealPathUtil
 import com.example.lightningWarning.viewmodels.ProfileFragmentViewModel
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.util.jar.Manifest
 
@@ -99,10 +101,8 @@ class ProfileFragment : Fragment() {
     private fun putAvatar(selectedImage: Uri) {
         val path = RealPathUtil.getRealPath(context, selectedImage)
         val imageFile = File(path)
-        val requestFile = RequestBody.create(
-            MediaType.parse("image/*"),
-            imageFile
-        )
+        val requestFile = imageFile
+            .asRequestBody("image/*".toMediaTypeOrNull())
         val image = MultipartBody.Part.createFormData(
             "avatar",
             imageFile.name,

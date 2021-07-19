@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -19,12 +20,17 @@ import com.example.lightningWarning.databinding.ActivityMainBinding
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.viewmodels.MainActivityViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var userData: UserData
+    private var isSignOut = false
+    private val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,17 +87,22 @@ class MainActivity : AppCompatActivity() {
         this.userData = userData
     }
 
+    fun setIsSignOut(isSignOut:Boolean){
+        this.isSignOut = isSignOut
+    }
+
     private fun saveUserData(userData: UserData){
         val gson = Gson()
         val jsonStringOfUserData = gson.toJson(userData)//convert userData to JSON string
         val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
         val editor = shared.edit()
-        editor.putString("jsonStringOfUserData",jsonStringOfUserData)
+        editor.putString("jsonStringOfUserData", jsonStringOfUserData)
         editor.apply()
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
+        if (!isSignOut)
         saveUserData(userData)
-        super.onDestroy()
+        super.onStop()
     }
 }
