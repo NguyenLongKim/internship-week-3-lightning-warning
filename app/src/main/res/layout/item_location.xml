@@ -16,7 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{location.display_name}"
+            android:gravity="center_vertical"
             android:onClick="@{()->adapter.onLocationClick(location)}"
-            android:drawableLeft="@drawable/ic_arrow_forward"/>
+            android:drawableLeft="@drawable/green_status_mini"
+            android:drawablePadding="20dp"
+            android:padding="10dp"/>
     </LinearLayout>
 </layout>

@@ -92,9 +92,9 @@ class DashboardFragmentViewModel : ViewModel() {
                     val body = response.body()
                     if (body != null) {
                         val fakeSensorHistory = SensorHistory(
-                            "time",
-                            "alarm",
-                            "message"
+                            "04 Sep, 11:00AM",
+                            "lightning detected",
+                            "Small lightning detected"
                         )
                         selectedSensorHistoriesLiveData.apply {
                             val tmp = body.data as ArrayList

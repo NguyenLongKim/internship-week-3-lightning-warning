@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -62,6 +63,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.navDrawer.setupWithNavController(navController)
+
+        window.statusBarColor = ContextCompat.getColor(this,R.color.white)
     }
 
     override fun onSupportNavigateUp(): Boolean {

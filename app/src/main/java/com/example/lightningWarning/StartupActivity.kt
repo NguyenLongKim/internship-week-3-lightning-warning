@@ -16,7 +16,6 @@ import retrofit2.Response
 class StartupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_startup)
 
         // retrieve shared preference
         val sharedPreference = getSharedPreferences("Khind", Context.MODE_PRIVATE)
@@ -60,6 +59,7 @@ class StartupActivity : AppCompatActivity() {
             intentToSignInActivity()
         }
     }
+
 
     private fun intentToMainActivity(userData: UserData) {
         val intent = Intent(this, MainActivity::class.java)

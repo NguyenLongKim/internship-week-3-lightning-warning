@@ -8,21 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
-import com.example.lightningWarning.adapters.LocationAdapter
 import com.example.lightningWarning.databinding.FragmentDashboardBinding
-import com.example.lightningWarning.models.SensorData
 import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
-import com.example.lightningWarning.viewmodels.MainActivityViewModel
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -51,8 +43,20 @@ class DashboardFragment : Fragment(){
 
         // connect view pager with tab layout
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = position.toString()
-            tab.setIcon(R.drawable.ic_notifications)
+            when (position){
+                0 -> {
+                    tab.text = "Status"
+                    tab.setIcon(R.drawable.bottom_icon_status)
+                }
+                1 -> {
+                    tab.text = "Lightning Map"
+                    tab.setIcon(R.drawable.bottom_icon_map)
+                }
+                else -> {
+                    tab.text = "History"
+                    tab.setIcon(R.drawable.bottom_icon_history)
+                }
+            }
         }.attach()
 
         // set tittle for action bar

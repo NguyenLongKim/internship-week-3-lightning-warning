@@ -19,6 +19,14 @@ class HistoryAdapter(private val histories: List<SensorHistory>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as HistoryViewHolder).binding.history=histories[position]
+        val statusDrawableId = when (histories[position].alarm){
+            "all clear" -> R.drawable.green_status_mini
+            "lightning detected" -> R.drawable.orange_status_mini
+            else -> R.drawable.red_status_mini
+        }
+        holder.binding.tvTitle.setCompoundDrawablesWithIntrinsicBounds(
+            statusDrawableId, 0, 0, 0
+        )
     }
 
     override fun getItemCount(): Int {

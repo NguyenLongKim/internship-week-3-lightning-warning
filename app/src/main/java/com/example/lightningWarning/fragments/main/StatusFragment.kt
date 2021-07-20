@@ -1,12 +1,14 @@
 package com.example.lightningWarning.fragments.main
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -32,7 +34,13 @@ class StatusFragment : Fragment() {
 
         // observer for selected sensor alarm view
         viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
-            binding.selectedSensor = sensorData
+            val statusDrawableId =  when (sensorData.alarm){
+                "clear" -> R.drawable.green_status
+                "warning" -> R.drawable.orange_status
+                "alert" -> R.drawable.red_status
+                else -> R.drawable.red_status
+            }
+            binding.imStatus.setImageResource(statusDrawableId)
         })
 
         return binding.root

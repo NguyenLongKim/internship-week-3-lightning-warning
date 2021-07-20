@@ -51,4 +51,9 @@
         android:id="@+id/searchLocationFragment"
         android:name="com.example.lightningWarning.fragments.main.SearchLocationFragment"
         android:label="SearchLocationFragment" />
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.lightningWarning.fragments.main.SupportFragment"
+        android:label="fragment_support"
+        tools:layout="@layout/fragment_support" />
 </navigation>

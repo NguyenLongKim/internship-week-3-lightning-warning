@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -34,6 +35,8 @@ class SignInActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         setupActionBarWithNavController(navController) // connect actionbar with navController
+
+        window.statusBarColor = ContextCompat.getColor(this,R.color.white)
 
         //init viewModel
         viewModel = ViewModelProvider(this).get(SignInActivityViewModel::class.java)

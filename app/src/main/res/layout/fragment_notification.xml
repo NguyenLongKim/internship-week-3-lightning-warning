@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black_90"
         android:orientation="vertical"
         tools:context=".fragments.main.NotificationFragment">
 
@@ -12,9 +13,10 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="0.1"
             app:tabMode="fixed"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
+            app:tabTextAppearance="@style/MyCustomTabText" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"

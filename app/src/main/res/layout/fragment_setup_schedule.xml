@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black_90"
     android:orientation="vertical"
     tools:context=".fragments.main.SetupScheduleFragment"
     tools:ignore="UnusedAttribute">
@@ -10,22 +11,25 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
-        android:gravity="center_vertical"
+        android:gravity="center"
+        android:padding="10dp"
         android:text="START AND END TIME" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
-        android:orientation="horizontal">
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="15dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="08:00" />
+            android:text="08:00"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -39,63 +43,92 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="17:00" />
+            android:text="17:00"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
-        android:gravity="center_vertical"
+        android:gravity="center"
+        android:padding="10dp"
         android:text="ACTIVE DAY(S)" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Monday" />
+        android:padding="10dp"
+        android:text="Monday"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Tuesday" />
+        android:padding="10dp"
+        android:text="Tuesday"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Wednesday" />
+        android:padding="10dp"
+        android:text="Wednesday"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Thursday" />
+        android:padding="10dp"
+        android:text="Thursday"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Friday" />
+        android:padding="10dp"
+        android:text="Friday"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Saturday" />
+        android:padding="10dp"
+        android:text="Saturday"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_text"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
         android:layoutDirection="rtl"
-        android:text="Sunday" />
+        android:padding="10dp"
+        android:text="Sunday"
+        android:textColor="@color/black"
+        android:textSize="16sp"/>
 
 </LinearLayout>

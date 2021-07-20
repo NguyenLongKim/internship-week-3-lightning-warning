@@ -58,9 +58,11 @@ class SettingFragment : Fragment() {
             }
         })
 
-        "Settings".also { (activity as AppCompatActivity)
-            .findViewById<TextView>(R.id.toolbar_title)
-            .text = it }
+        "Settings".also {
+            (activity as AppCompatActivity)
+                .findViewById<TextView>(R.id.toolbar_title)
+                .text = it
+        }
 
         return binding.root
     }

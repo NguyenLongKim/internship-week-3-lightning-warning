@@ -43,6 +43,11 @@ class SearchLocationFragment : Fragment() {
             binding.rvLocations.adapter?.notifyDataSetChanged()
         })
 
+        // listener to close this fragment
+        binding.tvSelectedSensorDisplayName.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         initLocationsRecyclerView()
 
         return binding.root

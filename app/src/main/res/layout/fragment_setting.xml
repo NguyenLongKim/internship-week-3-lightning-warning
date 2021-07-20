@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black_90"
         android:orientation="vertical"
         tools:context=".fragments.main.SettingFragment"
         tools:ignore="UseSwitchCompatOrMaterialXml">
@@ -13,59 +14,88 @@
             android:id="@+id/sw_disturb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:text="Do not Disturb" />
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp"
+            android:text="Do not Disturb"
+            android:textSize="16sp" />
 
         <Switch
             android:id="@+id/sw_alarm_sound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:text="Alarm Sound" />
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp"
+            android:text="Alarm Sound"
+            android:textSize="16sp" />
 
         <Switch
             android:id="@+id/sw_alarm_vibration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:text="Alarm Vibration" />
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp"
+            android:text="Alarm Vibration"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_schedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
             android:gravity="center_vertical"
+            android:padding="15dp"
             android:text="Setup Schedule"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_faq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:gravity="center_vertical"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:padding="15dp"
             android:text="FAQ"
             android:textColor="@color/black"
+            android:textSize="16sp"
             app:drawableRightCompat="@drawable/ic_arrow_forward" />
 
         <TextView
             android:id="@+id/tv_privacy_policy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
             android:gravity="center_vertical"
+            android:padding="15dp"
             android:text="Privacy Policy"
             android:textColor="@color/black"
+            android:textSize="16sp"
             app:drawableRightCompat="@drawable/ic_arrow_forward" />
 
         <TextView
             android:id="@+id/tv_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
             android:gravity="center_vertical"
+            android:padding="15dp"
             android:text="Logout"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Version 1.0"
             android:textColor="@color/black" />
+
     </LinearLayout>
 </layout>

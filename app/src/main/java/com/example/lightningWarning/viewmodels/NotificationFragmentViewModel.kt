@@ -29,9 +29,9 @@ class NotificationFragmentViewModel : ViewModel() {
                     val body = response.body()
                     if (body != null) {
                         val fakeMessage = Message(
-                            "time",
-                            "title",
-                            "message"
+                            "04 Sep, 11:00AM",
+                            "Message title",
+                            "Message text"
                         )
                         messagesLiveData.apply {
                             val tmp = body.data as ArrayList
@@ -60,9 +60,9 @@ class NotificationFragmentViewModel : ViewModel() {
                     val body = response.body()
                     if (body != null) {
                         val fakeAlert = Alert(
-                            "time",
-                            "title",
-                            "message"
+                            "04 Sep, 11:00AM",
+                            "Alert title",
+                            "Alert text"
                         )
                         alertsLiveData.apply {
                             val tmp = body.data as ArrayList

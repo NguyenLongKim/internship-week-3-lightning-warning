@@ -20,10 +20,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:background="@drawable/bg_edit_text"
-            android:drawableRight="@drawable/ic_arrow_forward"
-            android:gravity="center_vertical"
-            android:text="@{selectedSensor.display_name}" />
+            android:background="@drawable/bg_text_view"
+            android:drawableRight="@drawable/ic_arrow_down"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@{selectedSensor.display_name}"
+            android:textSize="17sp" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
@@ -36,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"
+            app:tabTextColor="@color/black"
             app:tabMode="fixed"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
     </LinearLayout>

@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/main"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/dashboardFragment"
             android:title="Dashboard"/>
@@ -11,12 +13,17 @@
             android:title="Notifications"/>
     </group>
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/other"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/profileFragment"
             android:title="My Profile"/>
         <item
             android:id="@+id/settingFragment"
             android:title="Settings"/>
+        <item
+            android:id="@+id/supportFragment"
+            android:title="Support"/>
     </group>
 </menu>
