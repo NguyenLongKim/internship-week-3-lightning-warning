@@ -36,20 +36,16 @@ class NotificationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        "Notifications".also {
-            (activity as AppCompatActivity)
-                .findViewById<TextView>(R.id.toolbar_title)
-                .text = it
-        }
+        // set toolbar title
+        (activity as MainActivity).setToolBarTitle("Notifications")
 
         // Inflate the layout for this fragment
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_notification, container, false)
 
         // init view pager
-        val adapter = MyPagerAdapter(this)
-        binding.viewPager.adapter = adapter
+        val pagerAdapter = MyPagerAdapter(this)
+        binding.viewPager.adapter = pagerAdapter
 
         // connect view pager with tab layout
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -69,8 +65,6 @@ class NotificationFragment : Fragment() {
             }
         }
     }
-
-    fun getToken() = this.token
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.clear()

@@ -21,8 +21,8 @@ import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.example.lightningWarning.viewmodels.MainActivityViewModel
 
 class StatusFragment : Fragment() {
-    private lateinit var binding : FragmentStatusBinding
-    private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
+    private lateinit var binding: FragmentStatusBinding
+    private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
 
 
     override fun onCreateView(
@@ -30,14 +30,13 @@ class StatusFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_status,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_status, container, false)
 
-        // observer for selected sensor alarm view
-        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
-            val statusDrawableId =  when (sensorData.alarm){
+        // selected sensor observer
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner, { sensorData ->
+            val statusDrawableId = when (sensorData.alarm) {
                 "clear" -> R.drawable.green_status
                 "warning" -> R.drawable.orange_status
-                "alert" -> R.drawable.red_status
                 else -> R.drawable.red_status
             }
             binding.imStatus.setImageResource(statusDrawableId)

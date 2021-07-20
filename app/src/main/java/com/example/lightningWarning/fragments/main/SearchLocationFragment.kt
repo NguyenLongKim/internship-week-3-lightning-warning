@@ -23,22 +23,28 @@ import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 class SearchLocationFragment : Fragment() {
     private lateinit var binding:FragmentSearchLocationBinding
     private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
+    private lateinit var token:String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        token = (activity as MainActivity).getToken()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_location,container,false)
 
         (activity as AppCompatActivity).supportActionBar?.hide()
 
-        // observer for selected sensor view
+        // selected sensor observer
         viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
             binding.selectedSensor = sensorData
         })
 
-        // observer for sensors/locations view
+        // sensors observer
         viewModel.getSensorsLiveData().observe(viewLifecycleOwner,{
             binding.rvLocations.adapter?.notifyDataSetChanged()
         })
@@ -54,14 +60,13 @@ class SearchLocationFragment : Fragment() {
     }
 
     private fun initLocationsRecyclerView(){
-        val adapter = LocationAdapter(viewModel.getSensorsLiveData().value!!)
-        binding.rvLocations.adapter=adapter
+        val locationAdapter = LocationAdapter(viewModel.getSensorsLiveData().value!!)
+        binding.rvLocations.adapter=locationAdapter
         binding.rvLocations.layoutManager=LinearLayoutManager(context)
-        adapter.setOnLocationClickListener(object : LocationAdapter.OnLocationClickListener{
+        locationAdapter.setOnLocationClickListener(object : LocationAdapter.OnLocationClickListener{
             override fun onLocationClick(location: SensorData) {
-                val mainActivity = (activity as MainActivity)
-                viewModel.setSelectedSensor(mainActivity.getToken(),location)
-                mainActivity.onBackPressed()
+                viewModel.setSelectedSensor(token,location)
+                activity?.onBackPressed()
             }
         })
     }

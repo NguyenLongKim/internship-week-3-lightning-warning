@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.AlertAdapter
 import com.example.lightningWarning.adapters.MessageAdapter
@@ -20,11 +21,11 @@ import com.example.lightningWarning.viewmodels.NotificationFragmentViewModel
 
 class AlertFragment : Fragment() {
     private lateinit var binding: FragmentAlertBinding
-    private val viewModel : NotificationFragmentViewModel by viewModels({requireParentFragment()})
+    private val viewModel: NotificationFragmentViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val token = (parentFragment as NotificationFragment).getToken()
+        val token = (activity as MainActivity).getToken()
         viewModel.loadAlerts(token)
     }
 
@@ -33,10 +34,10 @@ class AlertFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_alert,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alert, container, false)
 
-        // observer for alerts view
-        viewModel.getAlertsLiveData().observe(viewLifecycleOwner,{
+        // get alerts response observer
+        viewModel.getAlertsLiveData().observe(viewLifecycleOwner, {
             binding.rvAlert.adapter?.notifyDataSetChanged()
         })
 
@@ -45,13 +46,12 @@ class AlertFragment : Fragment() {
         return binding.root
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         val alerts = viewModel.getAlertsLiveData().value
         val adapter = AlertAdapter(alerts!!)
         binding.rvAlert.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(context)
         }
-
     }
 }

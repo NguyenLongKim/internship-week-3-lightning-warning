@@ -19,7 +19,8 @@ class KhindRepository {
     companion object {
         val instance = KhindRepository()
         private const val BASE_URL = "https://khind.vinova.sg"
-        private var loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        private var loggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         private var okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

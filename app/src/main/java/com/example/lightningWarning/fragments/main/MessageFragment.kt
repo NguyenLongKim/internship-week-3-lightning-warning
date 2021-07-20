@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.HistoryAdapter
 import com.example.lightningWarning.adapters.MessageAdapter
@@ -21,11 +22,11 @@ import com.example.lightningWarning.viewmodels.NotificationFragmentViewModel
 
 class MessageFragment : Fragment() {
     private lateinit var binding: FragmentMessageBinding
-    private val viewModel:NotificationFragmentViewModel by viewModels({requireParentFragment()})
+    private val viewModel: NotificationFragmentViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val token = (parentFragment as NotificationFragment).getToken()
+        val token = (activity as MainActivity).getToken()
         viewModel.loadMessages(token)
     }
 
@@ -34,10 +35,10 @@ class MessageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_message,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
 
-        // observer for messages view
-        viewModel.getMessagesLiveData().observe(viewLifecycleOwner,{
+        // get messages response observer
+        viewModel.getMessagesLiveData().observe(viewLifecycleOwner, {
             binding.rvMessage.adapter?.notifyDataSetChanged()
         })
 
@@ -46,7 +47,7 @@ class MessageFragment : Fragment() {
         return binding.root
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         val messages = viewModel.getMessagesLiveData().value
         val adapter = MessageAdapter(messages!!)
         binding.rvMessage.apply {

@@ -21,12 +21,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.bumptech.glide.Glide
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentProfileBinding
+import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.utils.RealPathUtil
 import com.example.lightningWarning.viewmodels.ProfileFragmentViewModel
 import okhttp3.MediaType
@@ -45,17 +47,19 @@ class ProfileFragment : Fragment() {
             Glide.with(view.context)
                 .load(avatarUrl)
                 .override(300, 300)
+                .placeholder(R.drawable.default_avatar)
                 .into(view)
         }
     }
 
-    private val viewModel by navGraphViewModels<ProfileFragmentViewModel>(R.id.profileFragment)
+    private val viewModel by viewModels<ProfileFragmentViewModel>()
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var token: String
+    private lateinit var userData: UserData
+    private var updateAvatarFlag = false // to indicate that the user just updates avatar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        token = (activity as MainActivity).getToken()
+        userData = (activity as MainActivity).getUserData()
     }
 
     override fun onCreateView(
@@ -66,11 +70,7 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
         // set title
-        "My Profile".also {
-            (activity as AppCompatActivity)
-                .findViewById<TextView>(R.id.toolbar_title)
-                .text = it
-        }
+        (activity as MainActivity).setToolBarTitle("Profile")
 
         // listen to navigate to change password fragment
         binding.tvChangePassword.setOnClickListener {
@@ -78,19 +78,22 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        val userData = (activity as MainActivity).getUserData()
+        // bind user data
         binding.userData = userData
 
+        // put avatar response observer
         viewModel.getPutAvatarResponseLiveData().observe(viewLifecycleOwner, { response ->
-            if (response.status) {
+            if (response != null && response.status && updateAvatarFlag) {// put avatar successfully
                 Toast.makeText(context, "Update avatar successfully", Toast.LENGTH_SHORT).show()
-                userData.avatar = response.data.avatar
-                binding.userData = userData
-            } else {
+                userData.avatar = response.data.avatar // update avatar url
+                binding.userData = userData // update user data for view
+            } else if (updateAvatarFlag) {// put avatar failed
                 Toast.makeText(context, "Update avatar failed!", Toast.LENGTH_SHORT).show()
             }
+            updateAvatarFlag = false
         })
 
+        // listen to process to update avatar
         binding.tvTapToChange.setOnClickListener {
             processToUpDateAvatar()
         }
@@ -98,17 +101,16 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun putAvatar(selectedImage: Uri) {
-        val path = RealPathUtil.getRealPath(context, selectedImage)
-        val imageFile = File(path)
-        val requestFile = imageFile
-            .asRequestBody("image/*".toMediaTypeOrNull())
-        val image = MultipartBody.Part.createFormData(
-            "avatar",
-            imageFile.name,
-            requestFile
+    private fun processToUpDateAvatar() {
+        val currentStoragePermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
         )
-        viewModel.putAvatar(token, image)
+        if (currentStoragePermission == PackageManager.PERMISSION_GRANTED) {
+            getImageLauncher.launch("image/*")
+        } else {
+            requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
 
     private val getImageLauncher =
@@ -118,6 +120,19 @@ class ProfileFragment : Fragment() {
             }
         }
 
+    private fun putAvatar(selectedImage: Uri) {
+        updateAvatarFlag = true
+        val path = RealPathUtil.getRealPath(context, selectedImage)
+        val imageFile = File(path)
+        val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+        val image = MultipartBody.Part.createFormData(
+            "avatar",
+            imageFile.name,
+            requestFile
+        )
+        viewModel.putAvatar(userData.token.token, image)
+    }
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -126,16 +141,4 @@ class ProfileFragment : Fragment() {
                 Toast.makeText(context, "Permission denied!", Toast.LENGTH_SHORT).show()
             }
         }
-
-    private fun processToUpDateAvatar() {
-        val currentPermission = ContextCompat.checkSelfPermission(
-            requireContext(),
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-        if (currentPermission == PackageManager.PERMISSION_GRANTED) {
-            getImageLauncher.launch("image/*")
-        } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-    }
 }

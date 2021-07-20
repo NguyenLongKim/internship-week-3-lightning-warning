@@ -3,6 +3,7 @@ package com.example.lightningWarning
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,7 +21,7 @@ import com.google.gson.Gson
 class SignInActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var navController: NavController
-    private lateinit var viewModel: SignInActivityViewModel
+    private val viewModel by viewModels<SignInActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +38,6 @@ class SignInActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener
         setupActionBarWithNavController(navController) // connect actionbar with navController
 
         window.statusBarColor = ContextCompat.getColor(this,R.color.white)
-
-        //init viewModel
-        viewModel = ViewModelProvider(this).get(SignInActivityViewModel::class.java)
     }
 
 

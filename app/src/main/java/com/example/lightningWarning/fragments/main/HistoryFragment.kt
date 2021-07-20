@@ -17,18 +17,18 @@ import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.example.lightningWarning.viewmodels.MainActivityViewModel
 
 class HistoryFragment : Fragment() {
-    private lateinit var binding:FragmentHistoryBinding
-    private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
+    private lateinit var binding: FragmentHistoryBinding
+    private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_history,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
 
-        // observer for selected sensor histories view
-        viewModel.getSelectedSensorHistoriesLiveData().observe(viewLifecycleOwner,{
+        // selected sensor histories observer
+        viewModel.getSelectedSensorHistoriesLiveData().observe(viewLifecycleOwner, {
             binding.rvHistory.adapter?.notifyDataSetChanged()
         })
 
@@ -37,7 +37,7 @@ class HistoryFragment : Fragment() {
         return binding.root
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         val histories = viewModel.getSelectedSensorHistoriesLiveData().value
         val adapter = HistoryAdapter(histories!!)
         binding.rvHistory.apply {

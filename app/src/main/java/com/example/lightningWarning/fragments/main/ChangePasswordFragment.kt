@@ -24,7 +24,6 @@ class ChangePasswordFragment : Fragment() {
     private val viewModel by viewModels<ChangePasswordFragmentViewModel>()
     private lateinit var userData: UserData
     private lateinit var newPassword: String
-    private lateinit var passwordConfirmation: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,31 +34,28 @@ class ChangePasswordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        "Change Password".also {
-            (activity as AppCompatActivity)
-                .findViewById<TextView>(R.id.toolbar_title)
-                .text = it
-        }
+    ): View {
+        // set toolbar title
+        (activity as MainActivity).setToolBarTitle("Change Password")
 
         // Inflate the layout for this fragment
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_change_password, container, false)
 
+        // listen to request change password
         binding.btnUpdate.setOnClickListener {
-            newPassword = binding.etNewPassword.text.toString()
-            passwordConfirmation = binding.etConfirmNewPassword.text.toString()
+            newPassword = binding.etNewPassword.text.toString() // save new password
             viewModel.changePassword(
                 userData.token.token,
                 newPassword,
-                passwordConfirmation,
+                binding.etConfirmNewPassword.text.toString(),
                 binding.etOldPassword.text.toString()
             )
         }
 
+        // change password response observer
         viewModel.getChangePasswordResponseLiveData().observe(viewLifecycleOwner, { response ->
-            if (response != null && response.status) {
+            if (response != null && response.status) { // if change password successfully
                 binding.etNewPassword.text.clear()
                 binding.etConfirmNewPassword.text.clear()
                 binding.etOldPassword.text.clear()
@@ -68,15 +64,16 @@ class ChangePasswordFragment : Fragment() {
                     newPassword
                 )
                 Toast.makeText(context, "Change password successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Change password failed!", Toast.LENGTH_SHORT).show()
+            } else {// if change password failed
+                Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
             }
         })
 
+        // re-signIn response observer
         viewModel.getReSignInResponseLiveData().observe(viewLifecycleOwner, { response ->
             if (response != null && response.status) {
                 Toast.makeText(context, "Re sign in successfully", Toast.LENGTH_SHORT).show()
-                (activity as MainActivity).setUserData(response.data!!)
+                (activity as MainActivity).setUserData(response.data!!) // update user data
             } else {
                 Toast.makeText(context, "Re sign in failed!", Toast.LENGTH_SHORT).show()
             }

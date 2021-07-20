@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class LightningMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentLightningMapBinding
-    private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
+    private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private var address: String = ""
@@ -38,13 +39,14 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lightning_map, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_lightning_map, container, false)
 
         // init google map
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        // observer for selected sensor map view
+        // selected sensor detail observer
         viewModel.getSelectedSensorDetailLiveData().observe(viewLifecycleOwner, { sensorDetail ->
             latitude = sensorDetail.latitude
             longitude = sensorDetail.longitude
@@ -61,8 +63,8 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
         upDateMap()
     }
 
-    private fun upDateMap(){
-        if (map!=null) {
+    private fun upDateMap() {
+        if (map != null) {
             val newLocation = LatLng(latitude, longitude)
             map!!.addMarker(MarkerOptions().position(newLocation).title(address))
             map!!.moveCamera(CameraUpdateFactory.newLatLng(newLocation))
@@ -70,7 +72,7 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
                 CircleOptions()
                     .center(newLocation)
                     .radius(8000.0)
-                    .strokeColor(Color.YELLOW)
+                    .strokeColor(ContextCompat.getColor(requireContext(), R.color.orange))
             )
             map!!.addCircle(
                 CircleOptions()

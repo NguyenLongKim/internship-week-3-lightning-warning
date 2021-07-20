@@ -15,7 +15,7 @@ class SettingFragmentViewModel : ViewModel() {
 
     fun getSignOutResponseLiveData() = signOutResponseLiveData
 
-    fun signOut(token:String) {
+    fun signOut(token: String) {
         khindRepo.signOut(
             token,
             object : Callback<SignOutResponse> {

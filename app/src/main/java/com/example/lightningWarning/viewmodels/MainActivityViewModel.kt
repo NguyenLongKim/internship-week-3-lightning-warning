@@ -15,7 +15,7 @@ class MainActivityViewModel : ViewModel() {
 
     fun getRefreshTokenResponseLiveData() = refreshTokenResponseLiveData
 
-    private fun refreshToken(token:String,refresh_token:String) {
+    private fun refreshToken(token: String, refresh_token: String) {
         khindRepo.refreshToken(
             token,
             refresh_token,
@@ -30,6 +30,7 @@ class MainActivityViewModel : ViewModel() {
                     }
 
                 }
+
                 override fun onFailure(call: Call<RefreshTokenResponse>, t: Throwable) {
 
                 }

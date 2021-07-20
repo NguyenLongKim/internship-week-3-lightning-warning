@@ -17,7 +17,7 @@ class StartupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // retrieve shared preference
+        // retrieve app shared preference
         val sharedPreference = getSharedPreferences("Khind", Context.MODE_PRIVATE)
 
         // get JSON string of UserData
@@ -26,6 +26,7 @@ class StartupActivity : AppCompatActivity() {
             null
         )
 
+        // check if signed in user still valid
         if (jsonStringOfUserData != null) { // user is signed in
             val gson = Gson()
             // convert JSON string to a UserData object
@@ -43,7 +44,7 @@ class StartupActivity : AppCompatActivity() {
                         response: Response<GetSensorsResponse>
                     ) {
                         val body = response.body()
-                        if (body?.status == true) { // token isn't expired
+                        if (body?.status == true) { // token still valid
                             intentToMainActivity(userData)
                         } else { // token is expired
                             intentToSignInActivity()

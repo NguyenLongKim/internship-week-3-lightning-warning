@@ -24,24 +24,27 @@ class LoginFragment : Fragment() {
     private lateinit var listener: OnLoginSuccessListener
 
 
-    interface OnLoginSuccessListener{
-        fun onLoginSuccess(userData:UserData)
+    interface OnLoginSuccessListener {
+        fun onLoginSuccess(userData: UserData)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnLoginSuccessListener){
+        if (context is OnLoginSuccessListener) {
             listener = context
-        }else{
-            throw ClassCastException(context.toString()
-            +"must implement LoginFragment.OnLoginSuccessListener")
+        } else {
+            throw ClassCastException(
+                context.toString()
+                        + "must implement LoginFragment.OnLoginSuccessListener"
+            )
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        // inflate
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_login,
@@ -49,11 +52,13 @@ class LoginFragment : Fragment() {
             false
         )
 
+        // listen to transfer to forgot password fragment
         binding.tvForgotPassword.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
             findNavController().navigate(action)
         }
 
+        // listen to request login
         binding.btnLogin.setOnClickListener {
             viewModel.signIn(
                 binding.etEmail.text.toString(),
@@ -61,11 +66,12 @@ class LoginFragment : Fragment() {
             )
         }
 
-        viewModel.getSignInResponseLiveData().observe(viewLifecycleOwner,{signInResponse->
-            if (signInResponse!=null) {
+        // sign in response observer
+        viewModel.getSignInResponseLiveData().observe(viewLifecycleOwner, { signInResponse ->
+            if (signInResponse != null) {
                 listener.onLoginSuccess(signInResponse.data!!)
-            }else{
-                Toast.makeText(context,"Invalid Email or Password!",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Invalid Email or Password!", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -74,7 +80,6 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val toolbar = (activity as AppCompatActivity).supportActionBar
-        toolbar?.hide()
+        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 }

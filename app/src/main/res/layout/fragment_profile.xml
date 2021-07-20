@@ -20,7 +20,6 @@
             android:id="@+id/im_avatar"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:src="@drawable/default_avatar"
             app:avatarUrl="@{userData.avatar}"
             app:civ_border_color="@color/black_75"
             app:civ_border_width="1dp"

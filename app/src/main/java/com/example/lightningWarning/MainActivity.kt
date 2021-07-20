@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var userData: UserData
-    private var isSignOut = false
+    private var isSignedOut = false
     private val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navDrawer.setupWithNavController(navController)
 
-        window.statusBarColor = ContextCompat.getColor(this,R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -80,21 +80,31 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
+    override fun onStop() {
+        if (!isSignedOut)
+            saveUserDataToSharedPreference(userData)
+        super.onStop()
+    }
+
+    fun setToolBarTitle(title: String) {
+        binding.toolbarTitle.text = title
+    }
+
+    fun getUserData(): UserData = this.userData
+
+    fun setUserData(userData: UserData) {
+        this.userData = userData
+    }
+
     fun getToken(): String = this.userData.token.token
 
     fun getRefreshToken(): String = this.userData.token.refresh_token
 
-    fun getUserData(): UserData = this.userData
-
-    fun setUserData(userData:UserData){
-        this.userData = userData
+    fun setIsSignedOut(value: Boolean) {
+        this.isSignedOut = value
     }
 
-    fun setIsSignOut(isSignOut:Boolean){
-        this.isSignOut = isSignOut
-    }
-
-    private fun saveUserData(userData: UserData){
+    private fun saveUserDataToSharedPreference(userData: UserData) {
         val gson = Gson()
         val jsonStringOfUserData = gson.toJson(userData)//convert userData to JSON string
         val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
@@ -103,9 +113,16 @@ class MainActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    override fun onStop() {
-        if (!isSignOut)
-        saveUserData(userData)
-        super.onStop()
+    fun removeUserDataFromSharedPreference() {
+        val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
+        val editor = shared.edit()
+        editor.remove("jsonStringOfUserData")
+        editor.apply()
+    }
+
+    fun returnToSignInActivity() {
+        val intent = Intent(this, SignInActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -1,11 +1,13 @@
 package com.example.lightningWarning.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lightningWarning.models.ChangePasswordResponse
 import com.example.lightningWarning.models.PutAvatarResponse
 import com.example.lightningWarning.models.SignInResponse
 import com.example.lightningWarning.repositories.KhindRepository
+import com.google.gson.Gson
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,7 +38,16 @@ class ChangePasswordFragmentViewModel : ViewModel() {
                     call: Call<ChangePasswordResponse>,
                     response: Response<ChangePasswordResponse>
                 ) {
-                    changePasswordResponseLiveData.value = response.body()
+                    if (response.isSuccessful) {
+                        changePasswordResponseLiveData.value = response.body()
+                    } else {
+                        val gson = Gson()
+                        val errorResponse = gson.fromJson<ChangePasswordResponse>(
+                            response.errorBody()!!.charStream(),
+                            ChangePasswordResponse::class.java
+                        )
+                        changePasswordResponseLiveData.value = errorResponse
+                    }
                 }
 
                 override fun onFailure(call: Call<ChangePasswordResponse>, t: Throwable) {
@@ -46,7 +57,7 @@ class ChangePasswordFragmentViewModel : ViewModel() {
         )
     }
 
-    fun reSignIn(email:String,password:String){
+    fun reSignIn(email: String, password: String) {
         khindRepo.signIn(
             email,
             password,

@@ -17,6 +17,7 @@ import com.example.lightningWarning.databinding.FragmentDashboardBinding
 import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
+private const val NUM_PAGES = 3
 
 class DashboardFragment : Fragment(){
     private lateinit var binding: FragmentDashboardBinding
@@ -40,6 +41,7 @@ class DashboardFragment : Fragment(){
         val pagerAdapter = MyPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.isUserInputEnabled = false // disable swiping
+        binding.viewPager.offscreenPageLimit = NUM_PAGES/2 // decrease delay when switch to other page
 
         // connect view pager with tab layout
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -59,14 +61,10 @@ class DashboardFragment : Fragment(){
             }
         }.attach()
 
-        // set tittle for action bar
-        "Dashboard".also {
-            (activity as AppCompatActivity)
-                .findViewById<TextView>(R.id.toolbar_title)
-                .text = it
-        }
+        // set toolbar title
+        (activity as MainActivity).setToolBarTitle("Dashboard")
 
-        //observer for selected sensor view
+        // selected sensor observer
         viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner, { sensorData ->
             binding.selectedSensor = sensorData
         })
@@ -84,7 +82,7 @@ class DashboardFragment : Fragment(){
     // PagerAdapter inner class
     private class MyPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int {
-            return 3
+            return NUM_PAGES
         }
 
         override fun createFragment(position: Int): Fragment {
