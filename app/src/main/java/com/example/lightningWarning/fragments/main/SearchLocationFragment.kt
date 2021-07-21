@@ -21,31 +21,30 @@ import com.example.lightningWarning.models.SensorData
 import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 
 class SearchLocationFragment : Fragment() {
-    private lateinit var binding:FragmentSearchLocationBinding
-    private val viewModel:DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
-    private lateinit var token:String
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        token = (activity as MainActivity).getToken()
-    }
+    private lateinit var binding: FragmentSearchLocationBinding
+    private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_location,container,false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_search_location,
+            container,
+            false
+        )
 
         (activity as AppCompatActivity).supportActionBar?.hide()
 
         // selected sensor observer
-        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensorData->
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner, { sensorData ->
             binding.selectedSensor = sensorData
         })
 
         // sensors observer
-        viewModel.getSensorsLiveData().observe(viewLifecycleOwner,{
+        viewModel.getSensorsLiveData().observe(viewLifecycleOwner, {
             binding.rvLocations.adapter?.notifyDataSetChanged()
         })
 
@@ -59,13 +58,17 @@ class SearchLocationFragment : Fragment() {
         return binding.root
     }
 
-    private fun initLocationsRecyclerView(){
+    private fun initLocationsRecyclerView() {
         val locationAdapter = LocationAdapter(viewModel.getSensorsLiveData().value!!)
-        binding.rvLocations.adapter=locationAdapter
-        binding.rvLocations.layoutManager=LinearLayoutManager(context)
-        locationAdapter.setOnLocationClickListener(object : LocationAdapter.OnLocationClickListener{
+        binding.rvLocations.adapter = locationAdapter
+        binding.rvLocations.layoutManager = LinearLayoutManager(context)
+        locationAdapter.setOnLocationClickListener(object :
+            LocationAdapter.OnLocationClickListener {
             override fun onLocationClick(location: SensorData) {
-                viewModel.setSelectedSensor(token,location)
+                viewModel.setSelectedSensor(
+                    (activity as MainActivity).getToken(),
+                    location
+                )
                 activity?.onBackPressed()
             }
         })

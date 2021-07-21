@@ -18,16 +18,15 @@ import com.example.lightningWarning.databinding.FragmentChangePasswordBinding
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.viewmodels.ChangePasswordFragmentViewModel
 import com.example.lightningWarning.viewmodels.ProfileFragmentViewModel
+import java.time.chrono.MinguoChronology
 
 class ChangePasswordFragment : Fragment() {
     private lateinit var binding: FragmentChangePasswordBinding
     private val viewModel by viewModels<ChangePasswordFragmentViewModel>()
-    private lateinit var userData: UserData
     private lateinit var newPassword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userData = (activity as MainActivity).getUserData()
         setHasOptionsMenu(true)
     }
 
@@ -39,14 +38,18 @@ class ChangePasswordFragment : Fragment() {
         (activity as MainActivity).setToolBarTitle("Change Password")
 
         // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_change_password, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_change_password,
+            container,
+            false
+        )
 
         // listen to request change password
         binding.btnUpdate.setOnClickListener {
             newPassword = binding.etNewPassword.text.toString() // save new password
             viewModel.changePassword(
-                userData.token.token,
+                (activity as MainActivity).getToken(),
                 newPassword,
                 binding.etConfirmNewPassword.text.toString(),
                 binding.etOldPassword.text.toString()
@@ -60,12 +63,10 @@ class ChangePasswordFragment : Fragment() {
                 binding.etConfirmNewPassword.text.clear()
                 binding.etOldPassword.text.clear()
                 viewModel.reSignIn(
-                    userData.email,
+                    (activity as MainActivity).getUserData().email,
                     newPassword
                 )
                 Toast.makeText(context, "Change password successfully", Toast.LENGTH_SHORT).show()
-            } else {// if change password failed
-                Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -73,10 +74,13 @@ class ChangePasswordFragment : Fragment() {
         viewModel.getReSignInResponseLiveData().observe(viewLifecycleOwner, { response ->
             if (response != null && response.status) {
                 Toast.makeText(context, "Re sign in successfully", Toast.LENGTH_SHORT).show()
-                (activity as MainActivity).setUserData(response.data!!) // update user data
-            } else {
-                Toast.makeText(context, "Re sign in failed!", Toast.LENGTH_SHORT).show()
+                (activity as MainActivity).upDateUserData(response.data!!) // update user data
             }
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
         })
 
         return binding.root

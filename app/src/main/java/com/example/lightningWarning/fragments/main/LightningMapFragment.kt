@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -39,8 +40,12 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_lightning_map, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_lightning_map,
+            container,
+            false
+        )
 
         // init google map
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -53,7 +58,6 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
             address = sensorDetail.installation_address
             upDateMap()
         })
-
 
         return binding.root
     }

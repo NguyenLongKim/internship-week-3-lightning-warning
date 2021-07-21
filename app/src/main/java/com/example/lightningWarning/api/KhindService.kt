@@ -11,66 +11,66 @@ interface KhindService {
     // sign in
     @FormUrlEncoded
     @POST("/auth/sign_in")
-    fun signIn(
+    suspend fun signIn(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<SignInResponse>
+    ): Response<SignInResponse>
 
     // refresh token
     @FormUrlEncoded
     @POST("/auth/refresh_token")
-    fun refreshToken(
+    suspend fun refreshToken(
         @Header("X-Refresh-Token") token: String,
         @Field("refresh_token") refreshToken: String
-    ): Call<RefreshTokenResponse>
+    ): Response<RefreshTokenResponse>
 
 
     // sign out
     @DELETE("/auth/sign_out")
-    fun signOut(@Header("X-Http-Token") token: String): Call<SignOutResponse>
+    suspend fun signOut(@Header("X-Http-Token") token: String): Response<SignOutResponse>
     ////////////////
 
-    // sensors
+    // load sensors
     @GET("/sensors")
-    fun loadSensors(@Header("X-Http-Token") token: String): Call<GetSensorsResponse>
+    suspend fun loadSensors(@Header("X-Http-Token") token: String): Response<GetSensorsResponse>
 
     // sensor detail
     @GET("/sensors/{id}")
-    fun loadSensorDetail(
+    suspend fun loadSensorDetail(
         @Header("X-Http-Token") token: String,
         @Path("id") sensorId: String
-    ): Call<GetSensorDetailResponse>
+    ): Response<GetSensorDetailResponse>
 
     // sensor histories
     @GET("/sensors/{id}/histories")
-    fun loadSensorHistories(
+    suspend fun loadSensorHistories(
         @Header("X-Http-Token") token: String,
         @Path("id") sensorId: String
-    ): Call<GetSensorHistoriesResponse>
+    ): Response<GetSensorHistoriesResponse>
 
     // alerts
     @GET("/lightning_alerts")
-    fun loadAlerts(@Header("X-Http-Token") token: String): Call<GetAlertsResponse>
+    suspend fun loadAlerts(@Header("X-Http-Token") token: String): Response<GetAlertsResponse>
 
     // messages
     @GET("/messages")
-    fun loadMessages(@Header("X-Http-Token") token: String): Call<GetMessagesResponse>
+    suspend fun loadMessages(@Header("X-Http-Token") token: String): Response<GetMessagesResponse>
 
     // put avatar
     @Multipart
     @PUT("/users/avatar")
-    fun putAvatar(
+    suspend fun putAvatar(
         @Header("X-Http-Token") token: String,
         @Part image: MultipartBody.Part
-    ): Call<PutAvatarResponse>
+    ): Response<PutAvatarResponse>
 
     // change password
     @FormUrlEncoded
     @PUT("/users/change_password")
-    fun changePassword(
+    suspend fun changePassword(
         @Header("X-Http-Token") token: String,
         @Field("password") newPassword: String,
         @Field("password_confirmation") passwordConfirmation: String,
         @Field("current_password") currentPassword: String,
-    ): Call<ChangePasswordResponse>
+    ): Response<ChangePasswordResponse>
 }

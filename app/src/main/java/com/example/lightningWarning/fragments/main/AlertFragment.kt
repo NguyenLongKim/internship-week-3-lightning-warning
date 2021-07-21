@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -25,20 +26,29 @@ class AlertFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val token = (activity as MainActivity).getToken()
-        viewModel.loadAlerts(token)
+        viewModel.loadAlerts((activity as MainActivity).getToken())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alert, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_alert,
+            container,
+            false
+        )
 
         // get alerts response observer
         viewModel.getAlertsLiveData().observe(viewLifecycleOwner, {
             binding.rvAlert.adapter?.notifyDataSetChanged()
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
         })
 
         initRecyclerView()
@@ -47,8 +57,7 @@ class AlertFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        val alerts = viewModel.getAlertsLiveData().value
-        val adapter = AlertAdapter(alerts!!)
+        val adapter = AlertAdapter(viewModel.getAlertsLiveData().value!!)
         binding.rvAlert.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(context)

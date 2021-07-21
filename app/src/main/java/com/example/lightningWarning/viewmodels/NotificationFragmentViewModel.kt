@@ -3,8 +3,13 @@ package com.example.lightningWarning.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.lightningWarning.models.*
 import com.example.lightningWarning.repositories.KhindRepository
+import com.example.lightningWarning.utils.ErrorUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,70 +18,55 @@ class NotificationFragmentViewModel : ViewModel() {
     private val khindRepo = KhindRepository.instance
     private var messagesLiveData = MutableLiveData(ArrayList<Message>())
     private var alertsLiveData = MutableLiveData(ArrayList<Alert>())
+    private val errorResponseLiveData = MutableLiveData<ErrorResponse>()
 
     fun getMessagesLiveData() = messagesLiveData
 
     fun getAlertsLiveData() = alertsLiveData
 
-    fun loadMessages(token: String) {
-        khindRepo.loadMessages(
-            token,
-            object : Callback<GetMessagesResponse> {
-                override fun onResponse(
-                    call: Call<GetMessagesResponse>,
-                    response: Response<GetMessagesResponse>
-                ) {
-                    val body = response.body()
-                    if (body != null) {
-                        val fakeMessage = Message(
-                            "04 Sep, 11:00AM",
-                            "Message title",
-                            "Message text"
-                        )
-                        messagesLiveData.apply {
-                            val tmp = body.data as ArrayList
-                            tmp.add(fakeMessage)
-                            this.value?.clear()
-                            this.value?.addAll(tmp)
-                            this.value = this.value
-                        }
-                    }
-                }
+    fun getErrorResponseLiveData() = errorResponseLiveData
 
-                override fun onFailure(call: Call<GetMessagesResponse>, t: Throwable) {
+    fun loadMessages(token: String) {
+        viewModelScope.launch(Dispatchers.IO){
+            val response = khindRepo.loadMessages(token)
+            if (response.isSuccessful){
+                val fakeMessage = Message(
+                    "04 Sep, 11:00AM",
+                    "Message title",
+                    "Message text"
+                )
+                val tmpMessages = response.body()!!.data as ArrayList
+                tmpMessages.add(fakeMessage)
+                messagesLiveData.apply {
+                    this.value?.clear()
+                    this.value?.addAll(tmpMessages)
+                    this.postValue(this.value)
                 }
+            }else{
+                errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
-        )
+        }
     }
 
     fun loadAlerts(token: String) {
-        khindRepo.loadAlerts(
-            token,
-            object : Callback<GetAlertsResponse> {
-                override fun onResponse(
-                    call: Call<GetAlertsResponse>,
-                    response: Response<GetAlertsResponse>
-                ) {
-                    val body = response.body()
-                    if (body != null) {
-                        val fakeAlert = Alert(
-                            "04 Sep, 11:00AM",
-                            "Alert title",
-                            "Alert text"
-                        )
-                        alertsLiveData.apply {
-                            val tmp = body.data as ArrayList
-                            tmp.add(fakeAlert)
-                            this.value?.clear()
-                            this.value?.addAll(tmp)
-                            this.value = this.value
-                        }
-                    }
+        viewModelScope.launch(Dispatchers.IO){
+            val response = khindRepo.loadAlerts(token)
+            if (response.isSuccessful){
+                val fakeAlert = Alert(
+                    "04 Sep, 11:00AM",
+                    "Alert title",
+                    "Alert text"
+                )
+                val tmpAlerts = response.body()!!.data as ArrayList
+                tmpAlerts.add(fakeAlert)
+                alertsLiveData.apply {
+                    this.value?.clear()
+                    this.value?.addAll(tmpAlerts)
+                    this.postValue(this.value)
                 }
-
-                override fun onFailure(call: Call<GetAlertsResponse>, t: Throwable) {
-                }
+            }else{
+                errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
-        )
+        }
     }
 }

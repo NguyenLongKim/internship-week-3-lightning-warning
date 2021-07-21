@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -24,12 +25,6 @@ import com.example.lightningWarning.viewmodels.SettingFragmentViewModel
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingFragmentViewModel by viewModels()
-    private lateinit var token: String
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        token = (activity as MainActivity).getToken()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +34,12 @@ class SettingFragment : Fragment() {
         (activity as MainActivity).setToolBarTitle("Settings")
 
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_setting,
+            container,
+            false
+        )
 
         // listen to navigate to set up schedule fragment
         binding.tvSchedule.setOnClickListener {
@@ -49,7 +49,7 @@ class SettingFragment : Fragment() {
 
         // listen to trigger sign out
         binding.tvLogout.setOnClickListener {
-            viewModel.signOut(token)
+            viewModel.signOut((activity as MainActivity).getToken())
         }
 
         // observer for sign out response
@@ -60,6 +60,11 @@ class SettingFragment : Fragment() {
                 mainActivity.removeUserDataFromSharedPreference()
                 mainActivity.returnToSignInActivity()
             }
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
         })
 
         return binding.root

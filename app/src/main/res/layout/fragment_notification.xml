@@ -5,9 +5,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_90"
         android:orientation="vertical"
         tools:context=".fragments.main.NotificationFragment">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -17,6 +21,11 @@
             android:layout_weight="0.1"
             app:tabMode="fixed"
             app:tabTextAppearance="@style/MyCustomTabTextStyle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"

@@ -5,10 +5,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import com.example.lightningWarning.models.GetSensorsResponse
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.repositories.KhindRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,26 +40,16 @@ class StartupActivity : AppCompatActivity() {
             )
 
             // check if userData is still valid
-            KhindRepository.instance.loadSensors(
-                userData.token.token,
-                object : Callback<GetSensorsResponse> {
-                    override fun onResponse(
-                        call: Call<GetSensorsResponse>,
-                        response: Response<GetSensorsResponse>
-                    ) {
-                        val body = response.body()
-                        if (body?.status == true) { // token still valid
-                            intentToMainActivity(userData)
-                        } else { // token is expired
-                            intentToSignInActivity()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<GetSensorsResponse>, t: Throwable) {
-                    }
-
+            // if so, intent to MainActivity with this userData
+            // otherwise, intent to SignInActivity
+            lifecycleScope.launch(Dispatchers.IO){
+                val response = KhindRepository.instance.loadSensors(userData.token.token)
+                if (response.isSuccessful){
+                    intentToMainActivity(userData)
+                }else{
+                    intentToSignInActivity()
                 }
-            )
+            }
         } else { // user hasn't signed in
             intentToSignInActivity()
         }

@@ -67,7 +67,12 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_profile,
+            container,
+            false
+        )
 
         // set title
         (activity as MainActivity).setToolBarTitle("Profile")
@@ -87,10 +92,15 @@ class ProfileFragment : Fragment() {
                 Toast.makeText(context, "Update avatar successfully", Toast.LENGTH_SHORT).show()
                 userData.avatar = response.data.avatar // update avatar url
                 binding.userData = userData // update user data for view
-            } else if (updateAvatarFlag) {// put avatar failed
-                Toast.makeText(context, "Update avatar failed!", Toast.LENGTH_SHORT).show()
             }
             updateAvatarFlag = false
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            if (updateAvatarFlag) {
+                Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+            }
         })
 
         // listen to process to update avatar
@@ -130,7 +140,7 @@ class ProfileFragment : Fragment() {
             imageFile.name,
             requestFile
         )
-        viewModel.putAvatar(userData.token.token, image)
+        viewModel.putAvatar((activity as MainActivity).getToken(), image)
     }
 
     private val requestPermissionLauncher =

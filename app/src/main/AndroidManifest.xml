@@ -10,7 +10,6 @@
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/app_icon"
-        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.LightningWarning"
         android:usesCleartextTraffic="true">
@@ -20,6 +19,7 @@
 
         <activity
             android:name=".StartupActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Startup">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +28,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SignInActivity">
+        <activity
+            android:name=".SignInActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

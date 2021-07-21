@@ -67,12 +67,15 @@ class LoginFragment : Fragment() {
         }
 
         // sign in response observer
-        viewModel.getSignInResponseLiveData().observe(viewLifecycleOwner, { signInResponse ->
-            if (signInResponse != null) {
-                listener.onLoginSuccess(signInResponse.data!!)
-            } else {
-                Toast.makeText(context, "Invalid Email or Password!", Toast.LENGTH_SHORT).show()
+        viewModel.getSignInResponseLiveData().observe(viewLifecycleOwner, { response ->
+            if (response != null && response.status) {
+                listener.onLoginSuccess(response.data!!)
             }
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner,{response->
+            Toast.makeText(context,response.message,Toast.LENGTH_SHORT).show()
         })
 
         return binding.root

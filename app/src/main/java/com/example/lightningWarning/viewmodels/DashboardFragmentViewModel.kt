@@ -3,8 +3,12 @@ package com.example.lightningWarning.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.lightningWarning.models.*
 import com.example.lightningWarning.repositories.KhindRepository
+import com.example.lightningWarning.utils.ErrorUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,9 +16,10 @@ import retrofit2.Response
 class DashboardFragmentViewModel : ViewModel() {
     private val khindRepo = KhindRepository.instance
     private val sensorsLiveData = MutableLiveData(ArrayList<SensorData>())
-    private var selectedSensorLiveData = MutableLiveData<SensorData>()
-    private var selectedSensorDetailLiveData = MutableLiveData<SensorDetailData>()
-    private var selectedSensorHistoriesLiveData = MutableLiveData(ArrayList<SensorHistory>())
+    private val selectedSensorLiveData = MutableLiveData<SensorData>()
+    private val selectedSensorDetailLiveData = MutableLiveData<SensorDetailData>()
+    private val selectedSensorHistoriesLiveData = MutableLiveData(ArrayList<SensorHistory>())
+    private val errorResponseLiveData = MutableLiveData<ErrorResponse>()
 
 
     fun getSensorsLiveData() = sensorsLiveData
@@ -25,6 +30,8 @@ class DashboardFragmentViewModel : ViewModel() {
 
     fun getSelectedSensorHistoriesLiveData() = selectedSensorHistoriesLiveData
 
+    fun getErrorResponseLiveData() = errorResponseLiveData
+
     fun setSelectedSensor(token: String, sensor: SensorData) {
         this.selectedSensorLiveData.value = sensor
         loadSelectedSensorDetail(token, sensor.id)
@@ -32,84 +39,50 @@ class DashboardFragmentViewModel : ViewModel() {
     }
 
     fun loadSensors(token: String) {
-        khindRepo.loadSensors(
-            token,
-            object : Callback<GetSensorsResponse> {
-                override fun onResponse(
-                    call: Call<GetSensorsResponse>,
-                    response: Response<GetSensorsResponse>
-                ) {
-                    val data = response.body()?.data
-                    if (data != null && data.isNotEmpty()) {
-                        sensorsLiveData.apply {
-                            this.value = data as ArrayList
-                            this.value = this.value
-                        }
-                        selectedSensorLiveData.value = data[0]
-                        loadSelectedSensorDetail(token, data[0].id)
-                        loadSelectedSensorHistories(token, data[0].id)
-                    }
-                }
-
-                override fun onFailure(call: Call<GetSensorsResponse>, t: Throwable) {
-
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = khindRepo.loadSensors(token)
+            if (response.isSuccessful) {
+                val data = response.body()!!.data
+                sensorsLiveData.postValue(data as ArrayList)
+                selectedSensorLiveData.postValue(data[0])
+                loadSelectedSensorDetail(token, data[0].id)
+                loadSelectedSensorHistories(token, data[0].id)
+            } else {
+                errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
-        )
+        }
     }
 
     private fun loadSelectedSensorDetail(token: String, sensorId: String) {
-        khindRepo.loadSensorDetail(
-            token,
-            sensorId,
-            object : Callback<GetSensorDetailResponse> {
-                override fun onResponse(
-                    call: Call<GetSensorDetailResponse>,
-                    response: Response<GetSensorDetailResponse>
-                ) {
-                    val body = response.body()
-                    if (body != null) {
-                        selectedSensorDetailLiveData.value = body.data
-                    }
-                }
-
-                override fun onFailure(call: Call<GetSensorDetailResponse>, t: Throwable) {
-
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = khindRepo.loadSensorDetail(token, sensorId)
+            if (response.isSuccessful) {
+                selectedSensorDetailLiveData.postValue(response.body()!!.data)
+            } else {
+                errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
-        )
+        }
     }
 
     private fun loadSelectedSensorHistories(token: String, sensorId: String) {
-        khindRepo.loadSensorHistories(
-            token,
-            sensorId,
-            object : Callback<GetSensorHistoriesResponse> {
-                override fun onResponse(
-                    call: Call<GetSensorHistoriesResponse>,
-                    response: Response<GetSensorHistoriesResponse>
-                ) {
-                    val body = response.body()
-                    if (body != null) {
-                        val fakeSensorHistory = SensorHistory(
-                            "04 Sep, 11:00AM",
-                            "lightning detected",
-                            "Small lightning detected"
-                        )
-                        selectedSensorHistoriesLiveData.apply {
-                            val tmp = body.data as ArrayList
-                            tmp.add(fakeSensorHistory)
-                            this.value?.clear()
-                            this.value?.addAll(tmp)
-                            this.value = this.value
-                        }
-                    }
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = khindRepo.loadSensorHistories(token, sensorId)
+            if (response.isSuccessful) {
+                val fakeSensorHistory = SensorHistory(
+                    "04 Sep, 11:00AM",
+                    "lightning detected",
+                    "Small lightning detected"
+                )
+                val tmpHistories = response.body()!!.data as ArrayList
+                tmpHistories.add(fakeSensorHistory)
+                selectedSensorHistoriesLiveData.apply {
+                    this.value?.clear()
+                    this.value?.addAll(tmpHistories)
+                    this.postValue(this.value)
                 }
-
-                override fun onFailure(call: Call<GetSensorHistoriesResponse>, t: Throwable) {
-
-                }
+            } else {
+                errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
-        )
+        }
     }
 }

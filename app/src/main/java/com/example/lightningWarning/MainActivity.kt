@@ -8,6 +8,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -92,13 +93,28 @@ class MainActivity : AppCompatActivity() {
 
     fun getUserData(): UserData = this.userData
 
-    fun setUserData(userData: UserData) {
-        this.userData = userData
+    fun upDateUserData(newUserData: UserData) {
+        this.userData = newUserData
     }
 
-    fun getToken(): String = this.userData.token.token
+    fun getToken(): String {
+        if (System.currentTimeMillis() > userData.token.expired_at * 1000) {
+            refreshToken()
+        }
+        return userData.token.token
+    }
 
-    fun getRefreshToken(): String = this.userData.token.refresh_token
+    fun refreshToken() {
+        val newToken = viewModel.refreshToken(
+            userData.token.token,
+            userData.token.refresh_token
+        )
+        if (newToken != null) {
+            userData.token = newToken
+        } else {
+            Toast.makeText(this,"Refresh token failed!",Toast.LENGTH_SHORT).show()
+        }
+    }
 
     fun setIsSignedOut(value: Boolean) {
         this.isSignedOut = value

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
@@ -19,15 +20,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 private const val NUM_PAGES = 3
 
-class DashboardFragment : Fragment(){
+class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
-    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        token = (activity as MainActivity).getToken()
-        viewModel.loadSensors(token)
+        viewModel.loadSensors((activity as MainActivity).getToken())
     }
 
     override fun onCreateView(
@@ -35,17 +34,23 @@ class DashboardFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_dashboard,
+            container,
+            false
+        )
 
         // init view pager
         val pagerAdapter = MyPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.isUserInputEnabled = false // disable swiping
-        binding.viewPager.offscreenPageLimit = NUM_PAGES/2 // decrease delay when switch to other page
+        binding.viewPager.offscreenPageLimit =
+            NUM_PAGES / 2 // decrease delay when switch to other page
 
         // connect view pager with tab layout
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position){
+            when (position) {
                 0 -> {
                     tab.text = "Status"
                     tab.setIcon(R.drawable.bottom_icon_status)
@@ -71,9 +76,15 @@ class DashboardFragment : Fragment(){
 
         // listen to navigate to Search location fragment
         binding.tvSelectedSensorDisplayName.setOnClickListener {
-            val action = DashboardFragmentDirections.actionDashboardFragmentToSearchLocationFragment()
+            val action =
+                DashboardFragmentDirections.actionDashboardFragmentToSearchLocationFragment()
             findNavController().navigate(action)
         }
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+        })
 
         return binding.root
     }

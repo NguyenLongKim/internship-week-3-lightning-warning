@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -30,7 +31,12 @@ class StatusFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_status, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_status,
+            container,
+            false
+        )
 
         // selected sensor observer
         viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner, { sensorData ->
@@ -41,6 +47,10 @@ class StatusFragment : Fragment() {
             }
             binding.imStatus.setImageResource(statusDrawableId)
         })
+
+        binding.imStatus.setOnClickListener {
+            (activity as MainActivity).refreshToken()
+        }
 
         return binding.root
     }

@@ -24,24 +24,26 @@ import com.google.android.material.tabs.TabLayoutMediator
 class NotificationFragment : Fragment() {
     private lateinit var binding: FragmentNotificationBinding
     private val viewModel: NotificationFragmentViewModel by viewModels()
-    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        token = (activity as MainActivity).getToken()
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // set toolbar title
         (activity as MainActivity).setToolBarTitle("Notifications")
 
         // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_notification, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_notification,
+            container,
+            false
+        )
 
         // init view pager
         val pagerAdapter = MyPagerAdapter(this)

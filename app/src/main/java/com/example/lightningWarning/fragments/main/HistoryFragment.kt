@@ -1,10 +1,12 @@
 package com.example.lightningWarning.fragments.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -23,9 +25,14 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_history,
+            container,
+            false
+        )
 
         // selected sensor histories observer
         viewModel.getSelectedSensorHistoriesLiveData().observe(viewLifecycleOwner, {
@@ -38,8 +45,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        val histories = viewModel.getSelectedSensorHistoriesLiveData().value
-        val adapter = HistoryAdapter(histories!!)
+        val adapter = HistoryAdapter(viewModel.getSelectedSensorHistoriesLiveData().value!!)
         binding.rvHistory.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(context)

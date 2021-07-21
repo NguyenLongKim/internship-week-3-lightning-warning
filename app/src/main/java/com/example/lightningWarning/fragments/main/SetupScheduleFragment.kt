@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 
 
@@ -23,10 +24,9 @@ class SetupScheduleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainActivity).setToolBarTitle("Setup Schedule")
+
         // Inflate the layout for this fragment
-        "Setup Schedule".also { (activity as AppCompatActivity)
-            .findViewById<TextView>(R.id.toolbar_title)
-            .text = it }
         return inflater.inflate(R.layout.fragment_setup_schedule, container, false)
     }
 

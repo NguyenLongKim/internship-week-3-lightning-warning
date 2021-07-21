@@ -15,17 +15,25 @@
         android:orientation="vertical"
         tools:context=".fragments.main.DashboardFragment">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
         <TextView
             android:id="@+id/tv_selected_sensor_display_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:background="@drawable/bg_text_view"
             android:drawableRight="@drawable/ic_arrow_down"
             android:gravity="center"
             android:padding="6dp"
             android:text="@{selectedSensor.display_name}"
             android:textSize="17sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"

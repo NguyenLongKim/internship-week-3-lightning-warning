@@ -15,6 +15,10 @@
         android:orientation="vertical"
         tools:context=".fragments.main.SearchLocationFragment">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
 
         <TextView
             android:id="@+id/tv_selected_sensor_display_name"
@@ -27,16 +31,24 @@
             android:text="@{selectedSensor.display_name}"
             android:textSize="17sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:background="@drawable/bg_text_view"
             android:drawableRight="@drawable/ic_search"
             android:gravity="center_vertical"
             android:hint="Search location..."
-            android:paddingRight="6dp" />
+            android:padding="6dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_90"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_locations"
