@@ -8,6 +8,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,13 +17,13 @@ class KhindRepository {
     companion object {
         val instance = KhindRepository()
         private const val BASE_URL = "https://khind.vinova.sg"
-        /*private var loggingInterceptor =
+        private var loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        private var okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()*/
+        private var okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            /*.client(okHttpClient)*/
+            .client(okHttpClient)
             .build()
         private val khindService = retrofit.create(KhindService::class.java)
     }
@@ -65,4 +66,12 @@ class KhindRepository {
         passwordConfirmation: String,
         currentPassword: String,
     ) = khindService.changePassword(token, newPassword, passwordConfirmation, currentPassword)
+
+    suspend fun loadSchedule(token: String) = khindService.loadSchedule(token)
+
+    suspend fun putSchedule(
+        token: String,
+        body: RequestUpdateScheduleData
+    ) = khindService.putSchedule(token, body)
+
 }

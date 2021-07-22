@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.HistoryAdapter
 import com.example.lightningWarning.databinding.FragmentHistoryBinding
@@ -34,9 +35,22 @@ class HistoryFragment : Fragment() {
             false
         )
 
+        // selected sensor observer
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensor->
+                viewModel.loadSelectedSensorHistories(
+                    (activity as MainActivity).getToken(),
+                    sensor.id
+                )
+        })
+
         // selected sensor histories observer
         viewModel.getSelectedSensorHistoriesLiveData().observe(viewLifecycleOwner, {
             binding.rvHistory.adapter?.notifyDataSetChanged()
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
         })
 
         initRecyclerView()

@@ -25,11 +25,10 @@ class StatusFragment : Fragment() {
     private lateinit var binding: FragmentStatusBinding
     private val viewModel: DashboardFragmentViewModel by navGraphViewModels(R.id.dashboardFragment)
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
             inflater,
@@ -47,10 +46,6 @@ class StatusFragment : Fragment() {
             }
             binding.imStatus.setImageResource(statusDrawableId)
         })
-
-        binding.imStatus.setOnClickListener {
-            (activity as MainActivity).refreshToken()
-        }
 
         return binding.root
     }

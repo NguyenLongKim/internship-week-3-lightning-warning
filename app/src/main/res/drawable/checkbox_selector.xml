@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:right="20dp">
+        <selector android:variablePadding="true">
+            <item
+                android:drawable="@drawable/ic_circle_checkbox_checked"
+                android:state_checked="true" />
+            <item android:drawable="@drawable/ic__circle_checkbox_unchecked" />
+        </selector>
+    </item>
+</layer-list>

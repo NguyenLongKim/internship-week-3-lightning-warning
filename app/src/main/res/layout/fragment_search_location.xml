@@ -15,11 +15,6 @@
         android:orientation="vertical"
         tools:context=".fragments.main.SearchLocationFragment">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black_90"/>
-
         <TextView
             android:id="@+id/tv_selected_sensor_display_name"
             android:layout_width="match_parent"

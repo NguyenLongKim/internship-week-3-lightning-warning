@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="schedule"
+            type="com.example.lightningWarning.models.ScheduleData" />
+    </data>
+
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -16,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
+            android:checked="@{schedule.do_not_disturb}"
             android:padding="15dp"
             android:text="Do not Disturb"
             android:textSize="16sp" />
@@ -26,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
+            android:checked="@{schedule.alarm_sound}"
             android:padding="15dp"
             android:text="Alarm Sound"
             android:textSize="16sp" />
@@ -36,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
+            android:checked="@{schedule.alarm_vibration}"
             android:padding="15dp"
             android:text="Alarm Vibration"
             android:textSize="16sp" />

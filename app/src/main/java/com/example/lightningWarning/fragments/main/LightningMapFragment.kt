@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.navGraphViewModels
+import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentLightningMapBinding
 import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
@@ -51,12 +52,25 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        // selected sensor observer
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensor->
+            viewModel.loadSelectedSensorDetail(
+                (activity as MainActivity).getToken(),
+                sensor.id
+            )
+        })
+
         // selected sensor detail observer
         viewModel.getSelectedSensorDetailLiveData().observe(viewLifecycleOwner, { sensorDetail ->
             latitude = sensorDetail.latitude
             longitude = sensorDetail.longitude
             address = sensorDetail.installation_address
             upDateMap()
+        })
+
+        // error response observer
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
         })
 
         return binding.root

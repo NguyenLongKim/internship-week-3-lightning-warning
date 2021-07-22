@@ -65,10 +65,7 @@ class SearchLocationFragment : Fragment() {
         locationAdapter.setOnLocationClickListener(object :
             LocationAdapter.OnLocationClickListener {
             override fun onLocationClick(location: SensorData) {
-                viewModel.setSelectedSensor(
-                    (activity as MainActivity).getToken(),
-                    location
-                )
+                viewModel.setSelectedSensor(location)
                 activity?.onBackPressed()
             }
         })

@@ -73,4 +73,15 @@ interface KhindService {
         @Field("password_confirmation") passwordConfirmation: String,
         @Field("current_password") currentPassword: String,
     ): Response<ChangePasswordResponse>
+
+    // get schedule
+    @GET("/settings/schedule")
+    suspend fun loadSchedule(@Header("X-Http-Token") token: String): Response<GetScheduleResponse>
+
+    // put schedule
+    @PUT("/settings/schedule")
+    suspend fun putSchedule(
+        @Header("X-Http-Token") token: String,
+        @Body body: RequestUpdateScheduleData
+    ): Response<PutScheduleResponse>
 }

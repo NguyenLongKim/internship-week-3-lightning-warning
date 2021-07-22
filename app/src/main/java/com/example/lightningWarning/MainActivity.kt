@@ -81,12 +81,6 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
-    override fun onStop() {
-        if (!isSignedOut)
-            saveUserDataToSharedPreference(userData)
-        super.onStop()
-    }
-
     fun setToolBarTitle(title: String) {
         binding.toolbarTitle.text = title
     }
@@ -104,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         return userData.token.token
     }
 
-    fun refreshToken() {
+    private fun refreshToken() {
         val newToken = viewModel.refreshToken(
             userData.token.token,
             userData.token.refresh_token
@@ -112,12 +106,8 @@ class MainActivity : AppCompatActivity() {
         if (newToken != null) {
             userData.token = newToken
         } else {
-            Toast.makeText(this,"Refresh token failed!",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Refresh token failed!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    fun setIsSignedOut(value: Boolean) {
-        this.isSignedOut = value
     }
 
     private fun saveUserDataToSharedPreference(userData: UserData) {
@@ -129,16 +119,29 @@ class MainActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    fun removeUserDataFromSharedPreference() {
+    private fun removeUserDataFromSharedPreference() {
         val shared = getSharedPreferences("Khind", Context.MODE_PRIVATE)
         val editor = shared.edit()
         editor.remove("jsonStringOfUserData")
         editor.apply()
     }
 
-    fun returnToSignInActivity() {
+    private fun returnToSignInActivity() {
         val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    fun processToSignOut() {
+        isSignedOut = true
+        removeUserDataFromSharedPreference()
+        returnToSignInActivity()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!isSignedOut) {
+            saveUserDataToSharedPreference(userData)
+        }
     }
 }

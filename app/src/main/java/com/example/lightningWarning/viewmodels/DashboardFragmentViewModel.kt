@@ -32,28 +32,24 @@ class DashboardFragmentViewModel : ViewModel() {
 
     fun getErrorResponseLiveData() = errorResponseLiveData
 
-    fun setSelectedSensor(token: String, sensor: SensorData) {
-        this.selectedSensorLiveData.value = sensor
-        loadSelectedSensorDetail(token, sensor.id)
-        loadSelectedSensorHistories(token, sensor.id)
+    fun setSelectedSensor(sensor: SensorData) {
+        this.selectedSensorLiveData.postValue(sensor)
     }
 
     fun loadSensors(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = khindRepo.loadSensors(token)
             if (response.isSuccessful) {
-                val data = response.body()!!.data
-                sensorsLiveData.postValue(data as ArrayList)
+                val data = response.body()!!.data as ArrayList
+                sensorsLiveData.postValue(data)
                 selectedSensorLiveData.postValue(data[0])
-                loadSelectedSensorDetail(token, data[0].id)
-                loadSelectedSensorHistories(token, data[0].id)
             } else {
                 errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
         }
     }
 
-    private fun loadSelectedSensorDetail(token: String, sensorId: String) {
+    fun loadSelectedSensorDetail(token: String, sensorId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = khindRepo.loadSensorDetail(token, sensorId)
             if (response.isSuccessful) {
@@ -64,7 +60,7 @@ class DashboardFragmentViewModel : ViewModel() {
         }
     }
 
-    private fun loadSelectedSensorHistories(token: String, sensorId: String) {
+    fun loadSelectedSensorHistories(token: String, sensorId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = khindRepo.loadSensorHistories(token, sensorId)
             if (response.isSuccessful) {
