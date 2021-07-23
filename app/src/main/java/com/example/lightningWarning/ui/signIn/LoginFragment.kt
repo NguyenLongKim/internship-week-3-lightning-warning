@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.startup
+package com.example.lightningWarning.ui.signIn
 
 import android.content.Context
 import android.os.Bundle
@@ -10,16 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentLoginBinding
 import com.example.lightningWarning.models.UserData
-import com.example.lightningWarning.viewmodels.SignInActivityViewModel
 import java.lang.ClassCastException
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
-    private val viewModel by activityViewModels<SignInActivityViewModel>()
+    private val viewModel by viewModels<LogInFragmentViewModel>()
     private lateinit var listener: OnLoginSuccessListener
 
 

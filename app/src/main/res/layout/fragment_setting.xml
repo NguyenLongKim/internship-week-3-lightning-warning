@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@color/black_90"
         android:orientation="vertical"
-        tools:context=".fragments.main.SettingFragment"
+        tools:context=".ui.setting.SettingFragment"
         tools:ignore="UseSwitchCompatOrMaterialXml">
 
         <Switch

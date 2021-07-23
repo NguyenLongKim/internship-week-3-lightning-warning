@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.notification
 
 import android.os.Bundle
 import android.view.*

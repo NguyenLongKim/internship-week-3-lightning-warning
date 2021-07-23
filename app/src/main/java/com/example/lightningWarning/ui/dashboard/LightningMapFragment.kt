@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.dashboard
 
 import android.graphics.Color
 import android.os.Bundle
@@ -13,7 +13,6 @@ import androidx.navigation.navGraphViewModels
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentLightningMapBinding
-import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

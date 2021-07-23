@@ -1,4 +1,4 @@
-package com.example.lightningWarning.viewmodels
+package com.example.lightningWarning.ui.signIn
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class SignInActivityViewModel : ViewModel() {
+class LogInFragmentViewModel : ViewModel() {
     private val khindRepo = KhindRepository.instance
     private val signInResponseLiveData = MutableLiveData<SignInResponse>()
     private val errorResponseLiveData = MutableLiveData<ErrorResponse>()

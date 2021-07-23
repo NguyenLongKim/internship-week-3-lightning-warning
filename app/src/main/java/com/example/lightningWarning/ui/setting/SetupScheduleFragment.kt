@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.setting
 
 
 import android.app.TimePickerDialog
@@ -14,7 +14,7 @@ import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentSetupScheduleBinding
 import com.example.lightningWarning.models.RequestUpdateScheduleData
 import com.example.lightningWarning.models.ScheduleData
-import com.example.lightningWarning.viewmodels.SettingFragmentViewModel
+import com.example.lightningWarning.ui.setting.SettingFragmentViewModel
 
 
 private const val START_TIME_PICKER = 0

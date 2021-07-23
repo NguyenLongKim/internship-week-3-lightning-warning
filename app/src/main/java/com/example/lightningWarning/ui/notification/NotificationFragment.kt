@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.notification
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +12,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentNotificationBinding
-import com.example.lightningWarning.viewmodels.NotificationFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class NotificationFragment : Fragment() {

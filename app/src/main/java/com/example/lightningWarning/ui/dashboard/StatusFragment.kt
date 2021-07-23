@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.dashboard
 
 
 import android.os.Bundle
@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentStatusBinding
-import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 
 class StatusFragment : Fragment() {
     private lateinit var binding: FragmentStatusBinding

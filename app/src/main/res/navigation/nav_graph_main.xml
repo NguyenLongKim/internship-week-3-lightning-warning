@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.lightningWarning.fragments.main.DashboardFragment"
+        android:name="com.example.lightningWarning.ui.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.lightningWarning.fragments.main.NotificationFragment"
+        android:name="com.example.lightningWarning.ui.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.lightningWarning.fragments.main.ProfileFragment"
+        android:name="com.example.lightningWarning.ui.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -30,12 +30,12 @@
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.example.lightningWarning.fragments.main.ChangePasswordFragment"
+        android:name="com.example.lightningWarning.ui.changePassword.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.lightningWarning.fragments.main.SettingFragment"
+        android:name="com.example.lightningWarning.ui.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -44,21 +44,21 @@
     </fragment>
     <fragment
         android:id="@+id/setupScheduleFragment"
-        android:name="com.example.lightningWarning.fragments.main.SetupScheduleFragment"
+        android:name="com.example.lightningWarning.ui.setting.SetupScheduleFragment"
         android:label="fragment_setup_schedule"
         tools:layout="@layout/fragment_setup_schedule" />
     <fragment
         android:id="@+id/searchLocationFragment"
-        android:name="com.example.lightningWarning.fragments.main.SearchLocationFragment"
+        android:name="com.example.lightningWarning.ui.dashboard.SearchLocationFragment"
         android:label="SearchLocationFragment" />
     <fragment
         android:id="@+id/supportFragment"
-        android:name="com.example.lightningWarning.fragments.main.SupportFragment"
+        android:name="com.example.lightningWarning.ui.support.SupportFragment"
         android:label="fragment_support"
         tools:layout="@layout/fragment_support" />
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.lightningWarning.fragments.main.DetailFragment"
+        android:name="com.example.lightningWarning.ui.notification.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" /><action android:id="@+id/action_global_detailFragment" app:destination="@id/detailFragment"/>
 </navigation>

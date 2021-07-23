@@ -1,5 +1,6 @@
 package com.example.lightningWarning.repositories
 
+import android.util.Log
 import com.example.lightningWarning.api.KhindService
 import com.example.lightningWarning.models.*
 import okhttp3.MultipartBody

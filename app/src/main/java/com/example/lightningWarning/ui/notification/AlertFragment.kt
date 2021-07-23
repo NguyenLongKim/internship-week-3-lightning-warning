@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.notification
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +13,6 @@ import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.AlertAdapter
 import com.example.lightningWarning.databinding.FragmentAlertBinding
-import com.example.lightningWarning.viewmodels.NotificationFragmentViewModel
 
 class AlertFragment : Fragment() {
     private lateinit var binding: FragmentAlertBinding

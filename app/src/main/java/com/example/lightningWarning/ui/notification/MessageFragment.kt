@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.notification
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,7 +16,6 @@ import com.example.lightningWarning.adapters.MessageAdapter
 import com.example.lightningWarning.databinding.FragmentMessageBinding
 import com.example.lightningWarning.models.Message
 import com.example.lightningWarning.utils.EndlessScrollRecyclerViewListener
-import com.example.lightningWarning.viewmodels.NotificationFragmentViewModel
 
 class MessageFragment : Fragment() {
     private lateinit var binding: FragmentMessageBinding

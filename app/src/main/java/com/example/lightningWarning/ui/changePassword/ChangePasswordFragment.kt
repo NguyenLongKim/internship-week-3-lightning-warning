@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.changePassword
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentChangePasswordBinding
-import com.example.lightningWarning.viewmodels.ChangePasswordFragmentViewModel
 
 
 class ChangePasswordFragment : Fragment() {

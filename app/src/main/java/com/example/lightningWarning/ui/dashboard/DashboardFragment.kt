@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.dashboard
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +13,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentDashboardBinding
-import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 private const val NUM_PAGES = 3

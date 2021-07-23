@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.dashboard
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +13,6 @@ import com.example.lightningWarning.R
 import com.example.lightningWarning.adapters.LocationAdapter
 import com.example.lightningWarning.databinding.FragmentSearchLocationBinding
 import com.example.lightningWarning.models.SensorData
-import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
 
 class SearchLocationFragment : Fragment() {
     private lateinit var binding: FragmentSearchLocationBinding

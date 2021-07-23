@@ -1,4 +1,4 @@
-package com.example.lightningWarning.viewmodels
+package com.example.lightningWarning.ui.notification
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

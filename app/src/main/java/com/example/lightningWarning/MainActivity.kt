@@ -15,9 +15,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.example.lightningWarning.databinding.ActivityMainBinding
+import com.example.lightningWarning.models.ErrorResponse
 import com.example.lightningWarning.models.UserData
-import com.example.lightningWarning.viewmodels.MainActivityViewModel
+import com.example.lightningWarning.repositories.KhindRepository
+import com.example.lightningWarning.utils.ErrorUtil
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var userData: UserData
     private var isSignedOut = false
-    private val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,14 +96,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshToken() {
-        val newToken = viewModel.refreshToken(
-            userData.token.token,
-            userData.token.refresh_token
-        )
-        if (newToken != null) {
-            userData.token = newToken
-        } else {
-            Toast.makeText(this, "Refresh token failed!", Toast.LENGTH_SHORT).show()
+        var errorResponse : ErrorResponse? = null
+        runBlocking(Dispatchers.IO){
+            val response = KhindRepository.instance.refreshToken(
+                userData.token.token,
+                userData.token.refresh_token
+            )
+            if (response.isSuccessful) {
+                userData.token = response.body()!!.data.token
+            } else{
+                errorResponse = ErrorUtil.parseErrorBody(response.errorBody()!!)
+            }
+        }
+        if (errorResponse!=null){
+            Toast.makeText(this,errorResponse!!.message,Toast.LENGTH_SHORT).show()
         }
     }
 

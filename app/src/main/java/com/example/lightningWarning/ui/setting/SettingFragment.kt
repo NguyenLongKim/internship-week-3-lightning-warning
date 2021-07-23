@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.setting
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,7 +15,6 @@ import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentSettingBinding
 import com.example.lightningWarning.models.RequestUpdateScheduleData
 import com.example.lightningWarning.models.ScheduleData
-import com.example.lightningWarning.viewmodels.SettingFragmentViewModel
 
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding

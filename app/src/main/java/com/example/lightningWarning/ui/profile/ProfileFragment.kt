@@ -1,4 +1,4 @@
-package com.example.lightningWarning.fragments.main
+package com.example.lightningWarning.ui.profile
 
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,7 +21,6 @@ import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentProfileBinding
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.utils.RealPathUtil
-import com.example.lightningWarning.viewmodels.ProfileFragmentViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
