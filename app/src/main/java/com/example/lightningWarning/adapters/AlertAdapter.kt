@@ -18,7 +18,7 @@ class AlertAdapter(private val alerts: List<Alert>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as AlertViewHolder).binding.alert=alerts[position]
+        (holder as AlertViewHolder).binding.alert = alerts[position]
     }
 
     override fun getItemCount(): Int {

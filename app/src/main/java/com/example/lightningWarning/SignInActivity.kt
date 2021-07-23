@@ -1,13 +1,11 @@
 package com.example.lightningWarning
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -16,7 +14,6 @@ import com.example.lightningWarning.databinding.ActivitySignInBinding
 import com.example.lightningWarning.fragments.startup.LoginFragment
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.viewmodels.SignInActivityViewModel
-import com.google.gson.Gson
 
 class SignInActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener {
     private lateinit var binding: ActivitySignInBinding
@@ -37,7 +34,7 @@ class SignInActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener
 
         setupActionBarWithNavController(navController) // connect actionbar with navController
 
-        window.statusBarColor = ContextCompat.getColor(this,R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
     }
 
 

@@ -17,7 +17,6 @@ import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.viewmodels.SignInActivityViewModel
 import java.lang.ClassCastException
 
-
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val viewModel by activityViewModels<SignInActivityViewModel>()
@@ -74,8 +73,8 @@ class LoginFragment : Fragment() {
         })
 
         // error response observer
-        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner,{response->
-            Toast.makeText(context,response.message,Toast.LENGTH_SHORT).show()
+        viewModel.getErrorResponseLiveData().observe(viewLifecycleOwner, { response ->
+            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
         })
 
         return binding.root

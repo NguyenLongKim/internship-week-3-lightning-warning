@@ -4,18 +4,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.lifecycleScope
-import com.example.lightningWarning.models.GetSensorsResponse
 import com.example.lightningWarning.models.UserData
 import com.example.lightningWarning.repositories.KhindRepository
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class StartupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +37,11 @@ class StartupActivity : AppCompatActivity() {
             // check if userData is still valid
             // if so, intent to MainActivity with this userData
             // otherwise, intent to SignInActivity
-            lifecycleScope.launch(Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 val response = KhindRepository.instance.loadSensors(userData.token.token)
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     intentToMainActivity(userData)
-                }else{
+                } else {
                     intentToSignInActivity()
                 }
             }

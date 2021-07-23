@@ -12,11 +12,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="drawerArrowStyle">@style/MyDrawerArrowStyle</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:timePickerStyle">@style/SpinnerTimePicker</item>
+        <item name="drawerArrowStyle">@style/MyDrawerArrowStyle</item>
+        <item name="android:timePickerStyle">@style/SpinnerTimePickerStyle</item>
     </style>
 
+
+    <!--Startup theme-->
     <style name="Theme.Startup" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -25,12 +27,13 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
-
+    <!--DrawerToggle style-->
     <style name="MyDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/black</item>
     </style>
 
+    <!--Custom tab text Style-->
     <style name="MyCustomTabTextStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">16sp</item>
         <item name="color">@color/black</item>
@@ -39,8 +42,8 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="SpinnerTimePicker" parent="android:Widget.Material.Light.TimePicker">
+    <!--Time picker style-->
+    <style name="SpinnerTimePickerStyle" parent="android:Widget.Material.Light.TimePicker">
         <item name="android:timePickerMode">spinner</item>
     </style>
-
 </resources>

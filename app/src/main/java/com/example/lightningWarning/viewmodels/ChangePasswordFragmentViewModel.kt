@@ -1,22 +1,16 @@
 package com.example.lightningWarning.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lightningWarning.models.ChangePasswordResponse
 import com.example.lightningWarning.models.ErrorResponse
-import com.example.lightningWarning.models.PutAvatarResponse
 import com.example.lightningWarning.models.SignInResponse
 import com.example.lightningWarning.repositories.KhindRepository
 import com.example.lightningWarning.utils.ErrorUtil
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class ChangePasswordFragmentViewModel : ViewModel() {
     private val khindRepo = KhindRepository.instance

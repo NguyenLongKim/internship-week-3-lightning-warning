@@ -2,8 +2,6 @@ package com.example.lightningWarning.api
 
 import com.example.lightningWarning.models.*
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -54,7 +52,10 @@ interface KhindService {
 
     // messages
     @GET("/messages")
-    suspend fun loadMessages(@Header("X-Http-Token") token: String): Response<GetMessagesResponse>
+    suspend fun loadMessages(
+        @Header("X-Http-Token") token: String,
+        @Query("page") page: Int
+    ): Response<GetMessagesResponse>
 
     // put avatar
     @Multipart

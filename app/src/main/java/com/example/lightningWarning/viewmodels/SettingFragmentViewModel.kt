@@ -1,6 +1,6 @@
 package com.example.lightningWarning.viewmodels
 
-import android.util.Log
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +9,7 @@ import com.example.lightningWarning.repositories.KhindRepository
 import com.example.lightningWarning.utils.ErrorUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class SettingFragmentViewModel : ViewModel() {
     private val khindRepo = KhindRepository.instance
@@ -52,11 +49,11 @@ class SettingFragmentViewModel : ViewModel() {
     }
 
     fun signOut(token: String) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             val response = khindRepo.signOut(token)
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 signOutResponseLiveData.postValue(response.body()!!)
-            }else{
+            } else {
                 errorResponseLiveData.postValue(ErrorUtil.parseErrorBody(response.errorBody()!!))
             }
         }

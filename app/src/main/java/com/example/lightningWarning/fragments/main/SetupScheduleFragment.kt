@@ -1,6 +1,6 @@
 package com.example.lightningWarning.fragments.main
 
-import android.app.Dialog
+
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.*

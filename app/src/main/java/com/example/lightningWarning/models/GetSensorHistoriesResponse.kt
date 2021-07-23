@@ -8,8 +8,8 @@ data class GetSensorHistoriesResponse(
 )
 
 data class SensorHistory(
-    val time:String,
-    val alarm:String,
+    val time: String,
+    val alarm: String,
     val message: String
 )
 

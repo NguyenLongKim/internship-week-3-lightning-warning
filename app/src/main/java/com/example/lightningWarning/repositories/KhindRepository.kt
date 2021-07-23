@@ -1,14 +1,9 @@
 package com.example.lightningWarning.repositories
 
-import android.util.Log
 import com.example.lightningWarning.api.KhindService
 import com.example.lightningWarning.models.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -53,7 +48,7 @@ class KhindRepository {
 
     suspend fun loadAlerts(token: String) = khindService.loadAlerts(token)
 
-    suspend fun loadMessages(token: String) = khindService.loadMessages(token)
+    suspend fun loadMessages(token: String, page: Int) = khindService.loadMessages(token, page)
 
     suspend fun putAvatar(
         token: String,

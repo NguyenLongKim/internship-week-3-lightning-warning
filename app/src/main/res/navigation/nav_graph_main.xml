@@ -56,4 +56,9 @@
         android:name="com.example.lightningWarning.fragments.main.SupportFragment"
         android:label="fragment_support"
         tools:layout="@layout/fragment_support" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.lightningWarning.fragments.main.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" /><action android:id="@+id/action_global_detailFragment" app:destination="@id/detailFragment"/>
 </navigation>

@@ -2,7 +2,6 @@ package com.example.lightningWarning.fragments.main
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.navGraphViewModels
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
 import com.example.lightningWarning.databinding.FragmentLightningMapBinding
 import com.example.lightningWarning.viewmodels.DashboardFragmentViewModel
-import com.example.lightningWarning.viewmodels.MainActivityViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -53,7 +49,7 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         // selected sensor observer
-        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner,{sensor->
+        viewModel.getSelectedSensorLiveData().observe(viewLifecycleOwner, { sensor ->
             viewModel.loadSelectedSensorDetail(
                 (activity as MainActivity).getToken(),
                 sensor.id
@@ -66,6 +62,13 @@ class LightningMapFragment : Fragment(), OnMapReadyCallback {
             longitude = sensorDetail.longitude
             address = sensorDetail.installation_address
             upDateMap()
+            binding.imLightningDetected.also {
+                if (sensorDetail.alarm == "clear"){
+                    it.visibility = View.GONE
+                } else{
+                    it.visibility = View.VISIBLE
+                }
+            }
         })
 
         // error response observer

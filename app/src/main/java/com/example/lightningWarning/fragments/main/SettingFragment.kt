@@ -1,29 +1,20 @@
 package com.example.lightningWarning.fragments.main
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.lightningWarning.MainActivity
 import com.example.lightningWarning.R
-import com.example.lightningWarning.SignInActivity
 import com.example.lightningWarning.databinding.FragmentSettingBinding
 import com.example.lightningWarning.models.RequestUpdateScheduleData
 import com.example.lightningWarning.models.ScheduleData
-import com.example.lightningWarning.viewmodels.MainActivityViewModel
 import com.example.lightningWarning.viewmodels.SettingFragmentViewModel
 
 class SettingFragment : Fragment() {
@@ -39,7 +30,7 @@ class SettingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // set toolbar title
         (activity as MainActivity).setToolBarTitle("Settings")
 
@@ -63,30 +54,33 @@ class SettingFragment : Fragment() {
         }
 
         // listen to update do not disturb
-        binding.swDisturb.setOnClickListener { it as Switch
+        binding.swDisturb.setOnClickListener {
+            it as Switch
             val newSchedule = RequestUpdateScheduleData()
             newSchedule.alarm_vibration = oldSchedule.alarm_vibration
             newSchedule.alarm_sound = oldSchedule.alarm_sound
             newSchedule.do_not_disturb = it.isChecked
-            viewModel.putSchedule((activity as MainActivity).getToken(),newSchedule)
+            viewModel.putSchedule((activity as MainActivity).getToken(), newSchedule)
         }
 
         // listen to update alarm_sound
-        binding.swAlarmSound.setOnClickListener { it as Switch
+        binding.swAlarmSound.setOnClickListener {
+            it as Switch
             val newSchedule = RequestUpdateScheduleData()
             newSchedule.alarm_vibration = oldSchedule.alarm_vibration
             newSchedule.do_not_disturb = oldSchedule.do_not_disturb
             newSchedule.alarm_sound = it.isChecked
-            viewModel.putSchedule((activity as MainActivity).getToken(),newSchedule)
+            viewModel.putSchedule((activity as MainActivity).getToken(), newSchedule)
         }
 
         // listen to update alarm_sound
-        binding.swAlarmVibration.setOnClickListener { it as Switch
+        binding.swAlarmVibration.setOnClickListener {
+            it as Switch
             val newSchedule = RequestUpdateScheduleData()
             newSchedule.do_not_disturb = oldSchedule.do_not_disturb
             newSchedule.alarm_sound = oldSchedule.alarm_sound
             newSchedule.alarm_vibration = it.isChecked
-            viewModel.putSchedule((activity as MainActivity).getToken(),newSchedule)
+            viewModel.putSchedule((activity as MainActivity).getToken(), newSchedule)
         }
 
 
@@ -102,8 +96,8 @@ class SettingFragment : Fragment() {
         })
 
         // put schedule response observer
-        viewModel.getPutScheduleResponseLiveData().observe(viewLifecycleOwner,{ response->
-            if (response?.status==true){
+        viewModel.getPutScheduleResponseLiveData().observe(viewLifecycleOwner, { response ->
+            if (response?.status == true) {
                 response.data.also {
                     oldSchedule = it
                     binding.schedule = it
